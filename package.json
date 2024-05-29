@@ -1,0 +1,21 @@
+{
+  "name": "cviceni-dokumentace",
+  "version": "0.0.1",
+  "description": "To document Historylab activity data files",
+  "main": "intex.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "typedoc --watch",
+    "docs": "typedoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-repository.git"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5"
+  }
+}
