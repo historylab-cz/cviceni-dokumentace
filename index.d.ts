@@ -104,7 +104,7 @@ interface ISlide {
   class: string | string[];
   // TODO: nastroje
   imitaceMapy?: ImitaceMapy;
-  klicovaSlova?: any;
+  klicovaSlova?: KlicovaSlova;
   media?: any;
   novaTabulka?: any;
   popisky?: any;
@@ -160,16 +160,20 @@ enum Feature {
   Svg = "svg",
 }
 
+// ========================= MODULY =========================
+
+// ----------------  ImitaceMapy ----------------
+
 /** Modul Imitace mapy, přepínání vrstev, kdy každá vrsta je obrázek
- * 
+ *
  * @example co-si-pamatuje-stahlavsky-les, co-rikaji-mapy-o-sovetskem-svazu, mnichov-1938-jaka-uzemi-byla-odtrzena
- * 
-*/
+ *
+ */
 interface ImitaceMapy {
   /** Jednotlivé vrstvy pro imitaci mapy */
   vrstvy: Layer[];
   /** Popisky, které jsou mezi vrstvami a ovládacími prvky (tlačítka pro přepínání) */
-  popisky?: string[]; 
+  popisky?: string[];
 }
 
 /** Jedna konkrétní mapa */
@@ -179,3 +183,78 @@ interface Layer {
   /** Label tlačítka, které přepne danou vrstvu */
   nazev: string; // name of the map to the button
 }
+
+// ----------------  KlicovaSlova ----------------
+
+/** Modul klíčová slova
+ *
+ * @example k-cemu-slouzil-stredoveky-hrad, zaverecne-cviceni-dejiny-na-mape, komu-psal-fucik
+ *
+ */
+interface KlicovaSlova {
+  /** Rozšíření o doplňkovou galerii */
+  galerie?: IGalery[]; //TODO: Dodělat galerii
+  /** Nastavení, jestli má být galerie velká ("velka-galerie"), či malá (nedefinováno) */
+  layout?: "velka-galerie";
+  /** Rozšíření o novou tabulku,
+   *
+   * @example komu-psal-fucik
+   */
+  novaTabulka?: INovaTabulka; // TODO: Dodělat novou tabulku
+  /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
+  klicovaSlova: IKlicovaSlovaItem[];
+}
+interface IKlicovaSlovaItem {
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'klicova-slova-1'
+   */
+  id: string;
+  /**  Nadpis pro skupinu klíčových slov */
+  nadpis?: string;
+  /**  Jednotlivé funkce pro manipulaci s klíčovými slovy
+   *
+   * @param 'selekce-' - všechna slova jsou vybrána, uživatel odebírá
+   * @param 'selekce+' - slova nejsou vybrána, uživatel přidává
+   * @param 'wordcloud' - +/- zvětšování, zmenšovaní slova
+   *
+   */
+  funkce: "selekce-" | "selekce+" | "wordcloud";
+  /** Jednotlivá klíčová slova */
+  tagy: IKlicovaSLovaTagy[];
+  /**
+   * Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
+   *
+   * @example poselstvi-pravekeho-hrobu
+   */
+  inherit?: IKSInherit;
+}
+/** Jednotlivá klíčová slova */
+interface IKlicovaSLovaTagy {
+  text: string;
+}
+/** Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
+ */
+interface IKSInherit {
+
+  /**
+   * Zapnutí / vypnutí funkce pro kopírování
+   * 
+   * @example 'true' - zapnuto, 'false' - vypnuto
+   * 
+   */
+  onInit: boolean;
+  /**
+   * ID klíčových slov
+   * 
+   * @example 'klicova-slova-1'
+   * 
+   */
+  from: string[];
+}
+// interface IGalery {
+//   TODO: any;
+// }
+// interface INovaTabulka {
+//   TODO: any;
+// }
