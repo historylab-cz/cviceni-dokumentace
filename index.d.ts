@@ -103,7 +103,7 @@ interface ISlide {
   };
   class: string | string[];
   // TODO: nastroje
-  imitaceMapy?: any;
+  imitaceMapy?: ImitaceMapy;
   klicovaSlova?: any;
   media?: any;
   novaTabulka?: any;
@@ -158,4 +158,24 @@ enum Feature {
   Cteni = "cteni",
   Text = "text",
   Svg = "svg",
+}
+
+/** Modul Imitace mapy, přepínání vrstev, kdy každá vrsta je obrázek
+ * 
+ * @example co-si-pamatuje-stahlavsky-les, co-rikaji-mapy-o-sovetskem-svazu, mnichov-1938-jaka-uzemi-byla-odtrzena
+ * 
+*/
+interface ImitaceMapy {
+  /** Jednotlivé vrstvy pro imitaci mapy */
+  vrstvy: Layer[];
+  /** Popisky, které jsou mezi vrstvami a ovládacími prvky (tlačítka pro přepínání) */
+  popisky?: string[]; 
+}
+
+/** Jedna konkrétní mapa */
+interface Layer {
+  /** Relativni cesta k obrazku  */
+  mapa: string;
+  /** Label tlačítka, které přepne danou vrstvu */
+  nazev: string; // name of the map to the button
 }
