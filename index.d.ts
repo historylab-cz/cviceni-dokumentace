@@ -102,10 +102,11 @@ interface ISlide {
     text: string;
   };
   class: string | string[];
-  // TODO: nastroje
+
   imitaceMapy?: ImitaceMapy;
   klicovaSlova?: KlicovaSlova;
-  media?: any;
+  media?: Media;
+  // TODO: nastroje
   novaTabulka?: any;
   popisky?: any;
   prameny?: any;
@@ -162,6 +163,8 @@ enum Feature {
 
 // ========================= MODULY =========================
 
+// ----------------  Galerie ----------------
+
 // ----------------  ImitaceMapy ----------------
 
 /** Modul Imitace mapy, přepínání vrstev, kdy každá vrsta je obrázek
@@ -193,7 +196,7 @@ interface Layer {
  */
 interface KlicovaSlova {
   /** Rozšíření o doplňkovou galerii */
-  galerie?: IGalery[]; //TODO: Dodělat galerii
+  galerie?: IGalerieItem[]; //TODO: Dodělat galerii
   /** Nastavení, jestli má být galerie velká ("velka-galerie"), či malá (nedefinováno) */
   layout?: "velka-galerie";
   /** Rozšíření o novou tabulku,
@@ -236,19 +239,18 @@ interface IKlicovaSLovaTagy {
 /** Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
  */
 interface IKSInherit {
-
   /**
    * Zapnutí / vypnutí funkce pro kopírování
-   * 
+   *
    * @example 'true' - zapnuto, 'false' - vypnuto
-   * 
+   *
    */
   onInit: boolean;
   /**
    * ID klíčových slov
-   * 
+   *
    * @example 'klicova-slova-1'
-   * 
+   *
    */
   from: string[];
 }
@@ -258,3 +260,111 @@ interface IKSInherit {
 // interface INovaTabulka {
 //   TODO: any;
 // }
+
+// ----------------  Média ----------------
+
+/** Modul média
+ *
+ * Zobrazení obrázků, audio přehrávek a videí
+ *
+ * @example co-chtel-zmenit-knize-bretislav, co-se-stalo-v-zime-1970
+ *
+ */
+interface Media {
+  galerie?: IGalerieItem[];
+  nastaveni: {
+    /** Nastavení rozložení médií:
+     *
+     * @para 'vertikalni' nebo  'galerie' nebo 'velka-galerie' - položky jsou seřazeny vertikálně @example co-se-stalo-v-zime-1970
+     * @para 'horizontalni' - položky jsou seřazeny horizontálně, @example co-chtel-zmenit-knize-bretislav
+     */
+    layout:
+      | "vertikalni"
+      | "galerie"
+      | "velka-galerie"
+      | "horizontalni"
+      | string;
+  };
+  /** Jednotlivé položky galerie */
+  soubory: MediaItem[];
+}
+
+/** Výčet typů médií */
+type MediaItem = IMediaImage | IVideoItem | IAudioItem;
+
+/** Obrázkové médium pro modul média */
+interface IMediaImage {
+  /** Popisek obrázku (uvnitř obrázku) */
+  popisek?: string;
+  /** Relativni cesta k obrazku  */
+  soubor: string;
+}
+
+/** Audio médium pro modul média */
+interface IAudioItem {
+  /** Typ audio přehrávače.
+   *
+   * Nedefinovaný = normální přehrávač
+   *
+   * @param 'jendoduchý' - jednoduchý přehrávač, bez doprovodných prvků @example to-byla-slava
+   *
+   */
+  vzhled?: "jednoduchy";
+  /** Relativni cesta k audiu  */
+  soubor: string;
+  /** Alternativita k vlastnosti soubor  */
+  objekt?: string;
+  /**  Label pro aduio přehrávač  */
+  label?: string;
+  /** Název audio přehrávač  */
+  nazev?: string;
+  /** Popisek k audio přehrávači */
+  popisek?: string;
+  /**
+   * Označuje, zda je k dispozici přepis
+   * @example jak-obhajit-pisen
+   */
+  prepis?: boolean;
+  /**
+   * Obsah přepisu. Relativní cesta k souboru s textem (ve složce text)
+   * @example "text-00"
+   * @example jak-obhajit-pisen
+   */
+  content?: string;
+}
+
+/** Video médium pro modul média */
+interface IVideoItem {
+  /** Relativni cesta k videu  */
+  soubor: string;
+  /**
+   * Označuje, zda je video ztlumeno.
+   * @default false
+   */
+  muted?: boolean;
+  /**
+   * Relativni cesta k obrázku plakátu u videa.
+   */
+  poster?: string;
+  /**
+   * Titulky k videu.
+   */
+  titulky?: IVideoTitulky;
+  /**  Label pro video přehrávač  */
+  label?: string;
+  /** Název video přehrávače */
+  nazev?: string;
+  /** Popisek k audio přehrávači */
+  popisek?: string;
+}
+/** Titulky k video přehrávači */
+interface IVideoTitulky {
+  /** Typ titulků. */
+  typ?: string;
+  /** Jazyk titulků.
+   * @example 'en', 'fr'
+   */
+  jazyk?: string;
+  /** Relativní cesta k souboru s titulky '/assets/video/' */
+  soubor: string;
+}
