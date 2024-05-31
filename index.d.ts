@@ -52,7 +52,7 @@ interface CviceniMetadata {
   /** Relativni cesta k obrazku pouzivaneho napr. v katalogu. Cesta je relativní vůči `/assets/img/`
    * @example "co-se-lidem-v-praveku-delo-se-zuby/pic-02-1280w.jpg"
    */
-  uvodniObrazek: string;
+  uvodniObrazek: ObrazekSoubor;
   /** Unikatni identifikator cviceni. */
   id: number;
   color: Color;
@@ -173,7 +173,7 @@ interface Slajd {
   novaTabulka?: NovaTabulka;
   popisky?: Popisky;
   prameny?: Prameny;
-  razeni?: any;
+  razeni?: Razeni;
   svg?: any;
   testKviz?: any;
   textovyEditor?: any;
@@ -234,6 +234,13 @@ enum Funkce {
 
 // ========================= MODULY =========================
 
+// ---------------- Podpurne typy ----------------
+
+/**
+ * @example "to-byla-slava/pic-00-1280w.jpg"
+ */
+type ObrazekSoubor = string;
+
 // ----------------  Galerie ----------------
 
 // ----------------  ImitaceMapy ----------------
@@ -253,7 +260,7 @@ interface ImitaceMapy {
 /** Jedna konkrétní mapa */
 interface ImitaceMapyVrstva {
   /** Relativni cesta k obrazku  */
-  mapa: string;
+  mapa: ObrazekSoubor;
   /** Label tlačítka, které přepne danou vrstvu */
   nazev: string; // name of the map to the button
 }
@@ -274,7 +281,7 @@ interface KlicovaSlova {
    *
    * @example komu-psal-fucik
    */
-  novaTabulka?: NovaTabulka; // TODO: Zkontrolovat novou tabulku 
+  novaTabulka?: NovaTabulka; // TODO: Zkontrolovat novou tabulku
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
   klicovaSlova: KlicovaSlovaSkupina[];
 }
@@ -365,7 +372,7 @@ interface MediaObrazek {
   /** Popisek obrázku (uvnitř obrázku) */
   popisek?: string;
   /** Relativni cesta k obrazku  */
-  soubor: string;
+  soubor: ObrazekSoubor;
 }
 
 /** Audio médium pro modul média */
@@ -413,7 +420,7 @@ interface Video {
   /**
    * Relativni cesta k obrázku plakátu u videa.
    */
-  poster?: string;
+  poster?: ObrazekSoubor;
   /**
    * Titulky k videu.
    */
@@ -486,9 +493,7 @@ interface TabulkaSloupec {
     options?: string[];
     attributes?: Record<string, string>; // V kodu je, ale nikde jsem nenasel pouziti
     /**
-     * 
      * @example jak-informovali-o-havarii
-     * 
      */
     textId: string; //"textovy-editor-2" ASI
   };
@@ -516,7 +521,15 @@ interface NovaTabulkaPretahovani {
 
 interface PretahovaniData {
   objekt: string;
-  medium: "tag" | "uzivatelsky text" | "obrazek" | "svg" | "audio" | "video" | "text" | string;
+  medium:
+    | "tag"
+    | "uzivatelsky text"
+    | "obrazek"
+    | "svg"
+    | "audio"
+    | "video"
+    | "text"
+    | string;
   popisek?: string;
 }
 
@@ -534,7 +547,7 @@ interface VideoStampData extends Video {
 
 // TODO: sjednotit nastaveni
 interface NastaveniVideoStamp {
-  layout: 'vertikalni' | 'galerie' | 'velka-galerie' | 'horizontalni';
+  layout: "vertikalni" | "galerie" | "velka-galerie" | "horizontalni";
 }
 interface Stamp {
   id: string;
@@ -548,4 +561,39 @@ type Popisky = string[];
 
 // ----------------  Prameny (plne nezkontrolovano) ----------------
 
-type Prameny = string[];
+type Prameny = ObrazekSoubor[];
+
+// ----------------  Razeni (plne nezkontrolovano) ----------------
+
+interface Razeni {
+  id: string;
+  typ: "horizontalni" | "vertikalni"; // layout of razeni
+  zpetnaVazba?: ZpetnaVazba[]; // Define a more specific type if the structure is known
+  objekty: RazeniPolozka[];
+}
+// TODO: generalizovat
+interface ZpetnaVazba {
+  /**
+   * how many wrong position is set (0 - all correct, 1 - one wrong, 2 - two or more wrong)
+   */
+  podminka: 0 | 1 | 2;
+  text: string; // text of the button for zpertnaVazba
+  barva: "color-red" | "color-orange" | "color-green"; // color of the button for zpertnaVazba
+}
+// TODO: generalizovat, polozka je bud obrazek, audio, text nebo video a rozsiri se o id, spravnaOdpoved atd. ASI
+interface RazeniPolozka {
+  id: string;
+  medium: "audio" | "video" | "uzivatelsky text" | "obrazek" | "svg" | "text";
+  spravnaOdpoved?: number; // position where this item is correct. ()
+  popisek?: string;
+  nazev?: string; // For AUDIO only, name of the audio procByliUneseni
+  objekt: RazeniText | Audio | RazeniSVG | ObrazekSoubor | Video;
+}
+//If medium is text:
+type RazeniText = string; //"král"
+
+// TODO: zkontrolovat generalizovat
+interface RazeniSVG {
+  soubor: string; // url to pic
+  duplikovat: string[]; // id of previous SVG, eg. "svg-1"
+}
