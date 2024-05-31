@@ -1,14 +1,14 @@
 /**
  *
  */
-interface IActivity {
+interface Cviceni {
   /** Metadata ke cvičení */
-  cviceni: IActivityMetadata;
+  cviceni: CviceniMetadata;
   /** Obsah cvičení tedy jednotlivé slajdy */
-  slajd: ISLide[];
+  slajd: Slajd[];
 }
 
-interface IActivityMetadata {
+interface CviceniMetadata {
   /** Existují dva typy verzí. */
   version: {
     /** Sémantická verze aplikace. Generovaná automaticky pomocí `npm release`. Je verzí aplikace jako takové. Tzn. všechny cvičení sdílí tuto hodnotu. */
@@ -17,7 +17,7 @@ interface IActivityMetadata {
     content: number;
   };
   /** Vyuziva se k automatizovanemu deploymentu, na jaky server cviceni deployovat */
-  katalog: Server[];
+  katalog: Katalog[];
   /** Definice jazyka, ve kterém je cvičení připraveno zapsaná ve formátu ISO 639-1 */
   language: Language;
   /** Nazev cviceni. Nemusí být unikátní. */
@@ -28,8 +28,8 @@ interface IActivityMetadata {
   slug: string;
   /** Jména autorů cvičení */
   autor: string[];
-  klicovaSlova: IKeywords;
-  casovaOsa: ITimeData;
+  klicovaSlova: KlicovaSlovaMetadata;
+  casovaOsa: CasovaOsa;
   /** Popis cvičení. Nyní importované z velké tabulky. */
   anotace: {
     /** Zobrazuje se v katalogu */
@@ -40,8 +40,9 @@ interface IActivityMetadata {
   /** Předpokládaná doba práce v minutách. */
   trvani: number;
   /** Obtížnost cvičení. Nyní importované z velké tabulky. */
-  obtiznost: Difficulty;
-  funkce: Feature[];
+  obtiznost: Obtiznost;
+  /** Manuálně definované (zatím). Slouží zejména k načtení knihoven potřebných pro dané funkce. */
+  funkce: Funkce[];
   pdf: {
     /** PDF doporučeného postupu určeného jako podpůrný materiál pro učitele.
      * @example "co-se-lidem-v-praveku-delo-se-zuby.pdf"
@@ -54,20 +55,82 @@ interface IActivityMetadata {
   uvodniObrazek: string;
   /** Unikatni identifikator cviceni. */
   id: number;
-  color: IColor;
-  mobileData: IResponsivity;
+  color: Color;
+  mobileData: MobileData;
 }
 
 /** Každé cvičení spadá do některých předefinovaných didaktických kategorií. Nyní importované z velké tabulky. */
-interface IKeywords {
-  rvp: string[];
-  koncept: string[];
-  b4: string[];
-  historylab: string[];
+interface KlicovaSlovaMetadata {
+  rvp: RVP[];
+  koncept: Koncept[];
+  b4: B4[];
+  historylab: Historylab[];
 }
 
+type RVP =
+  | "české země ve třech stoletích"
+  | "české země ve 20. století"
+  | "Československo 2. pol. 20. století"
+  | "první světová válka"
+  | "důsledky první světové války"
+  | "vznik ČSR"
+  | "politický vývoj ČSR"
+  | "hospodářský vývoj ČSR"
+  | "sociální problémy ČSR"
+  | "národnostní problémy ČSR"
+  | "hospodářská krize"
+  | "druhá světová válka"
+  | "důsledky druhé světové války"
+  | "antisemitismus"
+  | "rasismus"
+  | "totalitní režimy"
+  | "Československo 50. léta"
+  | "Československo 60. léta"
+  | "Československo 70. léta"
+  | "Československo 80. léta"
+  | "vznik České republiky"
+  | "příčiny studené války"
+  | "střetávání západního a východního bloku"
+  | "důsledky studené války"
+  | "kolonialismus"
+  | "dekolonizace"
+  | "problémy současného světa"
+  | "euroatlantická spolupráce"
+  | "technika"
+  | "vzdělání"
+  | "sport"
+  | "zábava";
+
+type Koncept =
+  | "člověk a životní prostředí"
+  | "dějiny ve veřejném prostoru"
+  | "gender"
+  | "každodennost"
+  | "migrace"
+  | "občanská společnost"
+  | "propaganda"
+  | "symboly"
+  | "umění"
+  | "vzpomínková kultura";
+
+type B4 =
+  | "dobové perspektivy"
+  | "příčiny a důsledky"
+  | "trvání a změna"
+  | "vztah k minulosti";
+
+type Historylab =
+  | "tvoříme"
+  | "diskutujeme"
+  | "sestavujeme podloženou odpověď"
+  | "porovnáváme prameny"
+  | "hledáme klíčové detaily"
+  | "formulujeme a ověřujeme hypotézu"
+  | "odhalujeme skrytý záměr pramene"
+  | "domýšlíme významy";
+
 /** Časové údaje cvičení. Slouží zejména k umístění na časové ose. Nyní importované z velké tabulky. */
-interface ITimeData {
+interface CasovaOsa {
   roky: number[];
   epochy: [
     {
@@ -79,7 +142,7 @@ interface ITimeData {
 }
 
 /** Barevná informace o cvičení. Automaticky generované z `uvodniObrazek`. Nyní slouží k určení pozice karty cvičení v katalogu na stránce "Galerie". */
-interface IColor {
+interface Color {
   rgb: {
     r: number;
     g: number;
@@ -92,13 +155,13 @@ interface IColor {
   };
 }
 
-interface ISlide {
+interface Slajd {
   zadani: {
     hlavni: string;
     rozsirujici?: string;
   };
   napoveda: {
-    aktivity: Feature[];
+    aktivity: Funkce[];
     text: string;
   };
   class: string | string[];
@@ -119,7 +182,7 @@ interface ISlide {
 }
 
 /** Informace o použitelnosti cvičení na malých a dotykových zařízeních. Automaticky generované skriptem na základě dostupných informací o cvičení. */
-interface IResponsivity {
+interface MobileData {
   /** Celkové skóre */
   mobileFriendly: MobileFriendly;
   /** Je použitelné na dotykových zařízeních? */
@@ -137,12 +200,12 @@ enum Language {
   Polish = "pl",
 }
 
-enum Server {
+enum Katalog {
   Test = "test",
   Public = "public",
 }
 
-enum Difficulty {
+enum Obtiznost {
   Low = "nízká",
   Medium = "střední",
   High = "vysoká",
@@ -154,11 +217,18 @@ enum MobileFriendly {
   Friendly = 2,
 }
 
-enum Feature {
-  Lupa = "lupa",
+enum Funkce {
+  Audio = "audio",
   Cteni = "cteni",
-  Text = "text",
+  Kresleni = "kresleni",
+  Lupa = "lupa",
+  Pretahovani = "pretahovani",
+  Razeni = "razeni",
   Svg = "svg",
+  Text = "text",
+  TextEditor = "text-editor",
+  Video = "video",
+  Znacky = "znacky",
 }
 
 // ========================= MODULY =========================
@@ -174,13 +244,13 @@ enum Feature {
  */
 interface ImitaceMapy {
   /** Jednotlivé vrstvy pro imitaci mapy */
-  vrstvy: Layer[];
+  vrstvy: ImitaceMapyVrstva[];
   /** Popisky, které jsou mezi vrstvami a ovládacími prvky (tlačítka pro přepínání) */
   popisky?: string[];
 }
 
 /** Jedna konkrétní mapa */
-interface Layer {
+interface ImitaceMapyVrstva {
   /** Relativni cesta k obrazku  */
   mapa: string;
   /** Label tlačítka, které přepne danou vrstvu */
@@ -196,18 +266,18 @@ interface Layer {
  */
 interface KlicovaSlova {
   /** Rozšíření o doplňkovou galerii */
-  galerie?: IGalerieItem[]; //TODO: Dodělat galerii
+  galerie?: Galerie[]; //TODO: Dodělat galerii
   /** Nastavení, jestli má být galerie velká ("velka-galerie"), či malá (nedefinováno) */
   layout?: "velka-galerie";
   /** Rozšíření o novou tabulku,
    *
    * @example komu-psal-fucik
    */
-  novaTabulka?: INovaTabulka; // TODO: Dodělat novou tabulku
+  novaTabulka?: NovaTabulka; // TODO: Dodělat novou tabulku
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
-  klicovaSlova: IKlicovaSlovaItem[];
+  klicovaSlova: KlicovaSlovaItem[];
 }
-interface IKlicovaSlovaItem {
+interface KlicovaSlovaItem {
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'klicova-slova-1'
@@ -218,27 +288,27 @@ interface IKlicovaSlovaItem {
   /**  Jednotlivé funkce pro manipulaci s klíčovými slovy
    *
    * @param 'selekce-' - všechna slova jsou vybrána, uživatel odebírá
-   * @param 'selekce+' - slova nejsou vybrána, uživatel přidává
+   * @param 'selekce+' - slova nejsou vybrána, uživatel vybírá
    * @param 'wordcloud' - +/- zvětšování, zmenšovaní slova
    *
    */
   funkce: "selekce-" | "selekce+" | "wordcloud";
   /** Jednotlivá klíčová slova */
-  tagy: IKlicovaSLovaTagy[];
+  tagy: KlicovaSlovaTagy[];
   /**
    * Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
    *
    * @example poselstvi-pravekeho-hrobu
    */
-  inherit?: IKSInherit;
+  inherit?: KlicovaSlovaInherit;
 }
 /** Jednotlivá klíčová slova */
-interface IKlicovaSLovaTagy {
+interface KlicovaSlovaTagy {
   text: string;
 }
 /** Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
  */
-interface IKSInherit {
+interface KlicovaSlovaInherit {
   /**
    * Zapnutí / vypnutí funkce pro kopírování
    *
@@ -254,12 +324,12 @@ interface IKSInherit {
    */
   from: string[];
 }
-// interface IGalery {
-//   TODO: any;
-// }
-// interface INovaTabulka {
-//   TODO: any;
-// }
+interface Galerie {
+  TODO: any;
+}
+interface NovaTabulka {
+  TODO: any;
+}
 
 // ----------------  Média ----------------
 
@@ -271,7 +341,7 @@ interface IKSInherit {
  *
  */
 interface Media {
-  galerie?: IGalerieItem[];
+  galerie?: Galerie[];
   nastaveni: {
     /** Nastavení rozložení médií:
      *
