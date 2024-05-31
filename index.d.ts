@@ -170,9 +170,9 @@ interface Slajd {
   klicovaSlova?: KlicovaSlova;
   media?: Media;
   // TODO: nastroje
-  novaTabulka?: any;
-  popisky?: any;
-  prameny?: any;
+  novaTabulka?: NovaTabulka;
+  popisky?: Popisky;
+  prameny?: Prameny;
   razeni?: any;
   svg?: any;
   testKviz?: any;
@@ -274,7 +274,7 @@ interface KlicovaSlova {
    *
    * @example komu-psal-fucik
    */
-  novaTabulka?: NovaTabulka; // TODO: Dodělat novou tabulku
+  novaTabulka?: NovaTabulka; // TODO: Zkontrolovat novou tabulku 
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
   klicovaSlova: KlicovaSlovaSkupina[];
 }
@@ -326,9 +326,6 @@ interface KlicovaSlovaInherit {
   from: string[];
 }
 interface Galerie {
-  TODO: any;
-}
-interface NovaTabulka {
   TODO: any;
 }
 
@@ -544,3 +541,11 @@ interface Stamp {
   emoji: string; // Emoji 😠
   popisek?: string;
 }
+
+// ----------------  Popisky (plne nezkontrolovano) ----------------
+
+type Popisky = string[];
+
+// ----------------  Prameny (plne nezkontrolovano) ----------------
+
+type Prameny = string[];
