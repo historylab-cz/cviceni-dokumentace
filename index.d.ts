@@ -438,3 +438,86 @@ interface VideoTitulky {
   /** Relativní cesta k souboru s titulky '/assets/video/' */
   soubor: string;
 }
+
+// ----------------  Nova Tabulka (plne nezkontrolovano) ----------------
+/** Tabulka
+ *
+ * @example husitstvi-a-historici
+ */
+interface NovaTabulka {
+  galerie?: Galerie[];
+  layout?: string;
+  pretahovani?: NovaTabulkaPretahovani;
+  tabulky: Tabulka[];
+}
+interface Tabulka {
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'nova-tabulka-1'
+   */
+  id: string;
+  /** Sloupce tabulky */
+  columns?: TabulkaSloupec[];
+  /** Řádky tabulky */
+  rows?: TabulkaRadek[];
+  /** Definice, odkud se mají získat data. Jedná se o ID jednotlivých modulů.
+   *
+   * @example husitstvi-a-historici
+   */
+  dataFrom?: string[];
+}
+
+interface TabulkaSloupec {
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'uryvky'
+   */
+  id: string;
+  /** Název sloupce */
+  name?: string;
+  /** Typ sloupce
+   *
+   * @example // TODO:  "tag"
+   * @example proc-resit-zidovskou-otazku
+   */
+  type?: {
+    name: string; //"drop" "select" "dup-text"
+    type: string; //"tag"
+    tagName?: string;
+    number?: number;
+    options?: string[];
+    attributes?: Record<string, string>; // V kodu je, ale nikde jsem nenasel pouziti
+    /**
+     * 
+     * @example jak-informovali-o-havarii
+     * 
+     */
+    textId: string; //"textovy-editor-2" ASI
+  };
+  values?: (string | number)[];
+}
+interface TabulkaRadek {
+  id: string;
+  name?: string;
+  type: {
+    name: string; //"drop"
+    type: string;
+    textId: string; //"textovy-editor-2"
+  };
+  values?: (string | number)[];
+}
+
+interface NovaTabulkaPretahovani {
+  dataFrom?: string[];
+  wasDropped?: boolean;
+  name?: string;
+  id: string;
+  tagName: string;
+  items?: PretahovaniData[];
+}
+
+interface PretahovaniData {
+  objekt: string;
+  medium: "tag" | "uzivatelsky text" | "obrazek" | "svg" | "audio" | "video" | "text" | string;
+  popisek?: string;
+}
