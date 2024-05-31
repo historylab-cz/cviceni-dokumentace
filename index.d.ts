@@ -241,13 +241,13 @@ enum Funkce {
  */
 interface ImitaceMapy {
   /** Jednotlivé vrstvy pro imitaci mapy */
-  vrstvy: ImitaceMapyVrstvy[];
+  vrstvy: ImitaceMapyVrstva[];
   /** Popisky, které jsou mezi vrstvami a ovládacími prvky (tlačítka pro přepínání) */
   popisky?: string[];
 }
 
 /** Jedna konkrétní mapa */
-interface ImitaceMapyVrstvy {
+interface ImitaceMapyVrstva {
   /** Relativni cesta k obrazku  */
   mapa: string;
   /** Label tlačítka, které přepne danou vrstvu */
