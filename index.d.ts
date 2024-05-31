@@ -1,14 +1,14 @@
 /**
  *
  */
-interface IActivity {
+interface Cviceni {
   /** Metadata ke cvičení */
-  cviceni: Cviceni;
+  cviceni: CviceniMetadata;
   /** Obsah cvičení tedy jednotlivé slajdy */
   slajd: Slajd[];
 }
 
-interface Cviceni {
+interface CviceniMetadata {
   /** Existují dva typy verzí. */
   version: {
     /** Sémantická verze aplikace. Generovaná automaticky pomocí `npm release`. Je verzí aplikace jako takové. Tzn. všechny cvičení sdílí tuto hodnotu. */
