@@ -240,8 +240,6 @@ enum Funkce {
  */
 type ObrazekSoubor = string;
 
-// ----------------  Galerie ----------------
-
 // ----------------  ImitaceMapy ----------------
 
 /** Modul Imitace mapy, přepínání vrstev, kdy každá vrsta je obrázek
@@ -330,9 +328,6 @@ interface KlicovaSlovaInherit {
    *
    */
   from: string[];
-}
-interface Galerie {
-  TODO: any;
 }
 
 // ----------------  Média ----------------
@@ -829,3 +824,51 @@ interface VyberZpetnaVazba {
   text: string; // feedback text
   podminka: number[]; // condition to display this feedback based on the number of correct answers
 }
+
+
+// TODO: Galerie NOT COMPLETED YET
+// ----------------  Galerie (plne nezkontrolovano) ----------------
+
+type Galerie = GaleriePolozka[];
+
+interface GaleriePolozka {
+  /**
+  The type of the gallery item.
+  Example: "svg", "text", "vyber"
+  */
+  typ?: string;
+  /**
+  The content or object associated with the gallery item.
+  For "svg", this might be the SVG content.
+  For "text", this might be the text content.
+  */
+  objekt?: any; // ISVGObject, string (Text string)
+  /**
+  The caption or description of the gallery item.
+  Example: "This is an SVG image." only if type §SVG§ and §text§ or no type
+  */
+  popisek?: string;
+  /**
+  The list of IDs for duplicated text sources.
+  Applicable when typ is "text".
+  */
+  duplikovat?: string[];
+  /**
+  The selected ID for items of type "vyber".
+  Applicable when typ is "vyber".
+  */
+  vyberId?: string;
+  /**
+  The filename of the media file (image, audio, or video).
+  Example: "example.jpg" //IF no type, it is an file
+  if audio and if "velka-galerie": classic audio-player else audioPlayerSimple
+  if image
+  */
+  soubor?: string;
+  /**
+  The enlarged version of the image file.
+  Applicable when the gallery item is an image.
+  Example: "example_large.jpg"
+  */
+  zvetseny?: string;
+  }
