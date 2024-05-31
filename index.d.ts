@@ -5,7 +5,7 @@ interface Cviceni {
   /** Metadata ke cvičení */
   cviceni: CviceniMetadata;
   /** Obsah cvičení tedy jednotlivé slajdy */
-  slajd: Slajd[];
+  slajd: CviceniSlajd[];
 }
 
 interface CviceniMetadata {
@@ -159,7 +159,7 @@ interface Color {
   };
 }
 
-interface Slajd {
+interface CviceniSlajd {
   zadani: {
     hlavni: string;
     rozsirujici?: string;
