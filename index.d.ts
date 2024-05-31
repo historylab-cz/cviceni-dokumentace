@@ -177,7 +177,7 @@ interface Slajd {
   svg?: Svg;
   testKviz?: TestKviz;
   textovyEditor?: TextovyEditor;
-  uzivatelskyText?: any;
+  uzivatelskyText?: UzivatelskyText;
   videoStamps: VideoStamps;
   vyber?: any;
 }
@@ -770,4 +770,29 @@ interface MenuPolozka {
 }
 interface PredznaceniText {
   vyraz: string; // expression to be premarked
+}
+
+// ----------------  UzivatelskyText (plne nezkontrolovano) ----------------
+
+interface UzivatelskyText {
+  galerie?: Galerie;  // Define this more specifically if you know the structure
+  novaTabulka?: NovaTabulka; // TODO: zkontrolovat jestli sedi
+  layout?: "horizontalni" | "velka-galerie"; // Velka galerie if gallery, horizintalni for otazky
+  otazky: Otazka[];
+}
+
+interface Otazka {
+  id: string;
+  zadani?: Zadani | string; // CoSeDozvimeZPropagistickychLetaku
+  instrukce?: string; //"Myslím si, že…"
+  minDelka?: number;
+  maxDelka?: number;
+  vyska?: number;
+  duplikovat?: string[]; // id of duplicated uzivatelskyText, eg. ["otazka-2"]
+  hodnota?: string;
+}
+
+interface Zadani {
+  from: string; // zadani from other modul, eg. "vyber-1"
+  placeholder: string; // "Zadání se zobrazí až po výběru položky na předchozím slajdu."
 }
