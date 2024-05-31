@@ -178,6 +178,7 @@ interface Slajd {
   testKviz?: any;
   textovyEditor?: any;
   uzivatelskyText?: any;
+  videoStamps: VideoStamps;
   vyber?: any;
 }
 
@@ -519,5 +520,27 @@ interface NovaTabulkaPretahovani {
 interface PretahovaniData {
   objekt: string;
   medium: "tag" | "uzivatelsky text" | "obrazek" | "svg" | "audio" | "video" | "text" | string;
+  popisek?: string;
+}
+
+// ----------------  Video Stamps (plne nezkontrolovano) ----------------
+
+interface VideoStamps {
+  video: VideoStampData;
+  nastaveni: NastaveniVideoStamp;
+}
+
+interface VideoStampData extends Video {
+  id: string;
+  stamps: Stamp[];
+}
+
+// TODO: sjednotit nastaveni
+interface NastaveniVideoStamp {
+  layout: 'vertikalni' | 'galerie' | 'velka-galerie' | 'horizontalni';
+}
+interface Stamp {
+  id: string;
+  emoji: string; // Emoji 😠
   popisek?: string;
 }
