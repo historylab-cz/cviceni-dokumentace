@@ -175,7 +175,7 @@ interface Slajd {
   prameny?: Prameny;
   razeni?: Razeni;
   svg?: Svg;
-  testKviz?: any;
+  testKviz?: TestKviz;
   textovyEditor?: any;
   uzivatelskyText?: any;
   videoStamps: VideoStamps;
@@ -714,4 +714,32 @@ interface SvgPretahovaniPolozka {
     | "video"
     | "text";
   popisek: string;
+}
+
+// ----------------  TestKviz (plne nezkontrolovano) ----------------
+
+interface TestKviz {
+  id?: string; // Optional ID for the test quiz
+  galerie?: Galerie; // Optional gallery object
+  nastaveni?: TestKvizNastaveni;
+  zadani: Otazka[]; // Array of questions
+  zpetnaVazba?: TestKvizZpetnaVazba[]; // Optional array of feedback objects - procjeVelkaBritaniezemicaje
+}
+interface TestKvizNastaveni {
+  layout?: "horizontal"; // Optional layout setting
+}
+interface Otazka {
+  otazka: string; // The question text
+  odpovedi: Odpoved[]; // Array of answer options
+  spravnaOdpoved: number; // Index of the correct answer (1-based)
+}
+interface Odpoved {
+  text: string; // The text of the answer option
+  selected?: boolean; // Optional boolean indicating if this option is selected
+}
+// TODO: generalizovat
+interface TestKvizZpetnaVazba {
+  barva: string; // The color of the feedback
+  text: string; // The feedback text
+  podminka: number[]; // Array of conditions (number of correct answers)
 }
