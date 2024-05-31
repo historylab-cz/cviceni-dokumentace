@@ -41,6 +41,7 @@ interface CviceniMetadata {
   trvani: number;
   /** Obtížnost cvičení. Nyní importované z velké tabulky. */
   obtiznost: Obtiznost;
+  /** Manuálně definované (zatím). Slouží zejména k načtení knihoven potřebných pro dané funkce. */
   funkce: Funkce[];
   pdf: {
     /** PDF doporučeného postupu určeného jako podpůrný materiál pro učitele.
@@ -154,10 +155,17 @@ enum MobileFriendly {
 }
 
 enum Funkce {
-  Lupa = "lupa",
+  Audio = "audio",
   Cteni = "cteni",
-  Text = "text",
+  Kresleni = "kresleni",
+  Lupa = "lupa",
+  Pretahovani = "pretahovani",
+  Razeni = "razeni",
   Svg = "svg",
+  Text = "text",
+  TextEditor = "text-editor",
+  Video = "video",
+  Znacky = "znacky",
 }
 
 // ========================= MODULY =========================
