@@ -275,9 +275,9 @@ interface KlicovaSlova {
    */
   novaTabulka?: NovaTabulka; // TODO: Dodělat novou tabulku
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
-  klicovaSlova: KlicovaSlovaItem[];
+  klicovaSlova: KlicovaSlovaSkupina[];
 }
-interface KlicovaSlovaItem {
+interface KlicovaSlovaSkupina {
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'klicova-slova-1'
@@ -356,14 +356,14 @@ interface Media {
       | string;
   };
   /** Jednotlivé položky galerie */
-  soubory: MediaItem[];
+  soubory: MediaPolozka[];
 }
 
 /** Výčet typů médií */
-type MediaItem = IMediaImage | IVideoItem | IAudioItem;
+type MediaPolozka = MediaObrazek | Video | Audio;
 
 /** Obrázkové médium pro modul média */
-interface IMediaImage {
+interface MediaObrazek {
   /** Popisek obrázku (uvnitř obrázku) */
   popisek?: string;
   /** Relativni cesta k obrazku  */
@@ -371,7 +371,7 @@ interface IMediaImage {
 }
 
 /** Audio médium pro modul média */
-interface IAudioItem {
+interface Audio {
   /** Typ audio přehrávače.
    *
    * Nedefinovaný = normální přehrávač
@@ -404,7 +404,7 @@ interface IAudioItem {
 }
 
 /** Video médium pro modul média */
-interface IVideoItem {
+interface Video {
   /** Relativni cesta k videu  */
   soubor: string;
   /**
@@ -419,7 +419,7 @@ interface IVideoItem {
   /**
    * Titulky k videu.
    */
-  titulky?: IVideoTitulky;
+  titulky?: VideoTitulky;
   /**  Label pro video přehrávač  */
   label?: string;
   /** Název video přehrávače */
@@ -428,7 +428,7 @@ interface IVideoItem {
   popisek?: string;
 }
 /** Titulky k video přehrávači */
-interface IVideoTitulky {
+interface VideoTitulky {
   /** Typ titulků. */
   typ?: string;
   /** Jazyk titulků.
