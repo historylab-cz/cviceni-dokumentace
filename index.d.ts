@@ -169,7 +169,6 @@ interface Slajd {
   imitaceMapy?: ImitaceMapy;
   klicovaSlova?: KlicovaSlova;
   media?: Media;
-  // TODO: nastroje
   novaTabulka?: NovaTabulka;
   popisky?: Popisky;
   prameny?: Prameny;
@@ -179,7 +178,7 @@ interface Slajd {
   textovyEditor?: TextovyEditor;
   uzivatelskyText?: UzivatelskyText;
   videoStamps: VideoStamps;
-  vyber?: any;
+  vyber?: Vyber;
 }
 
 /** Informace o použitelnosti cvičení na malých a dotykových zařízeních. Automaticky generované skriptem na základě dostupných informací o cvičení. */
@@ -568,11 +567,11 @@ type Prameny = ObrazekSoubor[];
 interface Razeni {
   id: string;
   typ: "horizontalni" | "vertikalni"; // layout of razeni
-  zpetnaVazba?: ZpetnaVazba[]; // Define a more specific type if the structure is known
+  zpetnaVazba?: RazeniZpetnaVazba[]; // Define a more specific type if the structure is known
   objekty: RazeniPolozka[];
 }
 // TODO: generalizovat
-interface ZpetnaVazba {
+interface RazeniZpetnaVazba {
   /**
    * how many wrong position is set (0 - all correct, 1 - one wrong, 2 - two or more wrong)
    */
@@ -795,4 +794,38 @@ interface Otazka {
 interface Zadani {
   from: string; // zadani from other modul, eg. "vyber-1"
   placeholder: string; // "Zadání se zobrazí až po výběru položky na předchozím slajdu."
+}
+
+// ----------------  Vyber (plne nezkontrolovano) ----------------
+
+interface Vyber {
+  id: string; // unique identifier for the selectable component
+  nastaveni: VyberNastaveni;
+  galerie?: Galerie; // gallery object if exists
+  zpetnaVazba?: VyberZpetnaVazba[]; // feedback settings
+  objekty: VyberPolozka[]; // list of selectable items
+}
+interface VyberNastaveni {
+ layout: 'horizontalni' | undefined; // layout type (horizontal or vertical)
+    viceOdpovedi?: boolean; // allows multiple answers if true viceOdpovedi ? "checkbox" : "radio"
+    vybrano: boolean; // initial selection state
+    disableFeedback: boolean; // feedback disabling state
+}
+
+interface VyberPolozka {
+  medium: 'text' | 'uzivatelsky text' | 'audio' | 'video' | 'image'; // media type
+  objekt: string | ObrazekSoubor | Audio | Video; // object file path or content
+  spravnaOdpoved: boolean; // indicates if this is the correct answer
+  /** Data pro modul uzivatelskyText.
+   * otazky => zadani.from
+   * 
+   * @example co-se-dozvime-z-propagandistickych-plakatu
+   */
+  data?: string; // optional data attribute for the item
+}
+// TODO: generalizovat
+interface VyberZpetnaVazba {
+  barva: string; // feedback color
+  text: string; // feedback text
+  podminka: number[]; // condition to display this feedback based on the number of correct answers
 }
