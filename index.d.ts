@@ -5,7 +5,7 @@ interface IActivity {
   /** Metadata ke cvičení */
   cviceni: Cviceni;
   /** Obsah cvičení tedy jednotlivé slajdy */
-  slajd: ISLide[];
+  slajd: Slajd[];
 }
 
 interface Cviceni {
@@ -54,7 +54,7 @@ interface Cviceni {
   uvodniObrazek: string;
   /** Unikatni identifikator cviceni. */
   id: number;
-  color: IColor;
+  color: Color;
   mobileData: MobileData;
 }
 
@@ -79,7 +79,7 @@ interface CasovaOsa {
 }
 
 /** Barevná informace o cvičení. Automaticky generované z `uvodniObrazek`. Nyní slouží k určení pozice karty cvičení v katalogu na stránce "Galerie". */
-interface IColor {
+interface Color {
   rgb: {
     r: number;
     g: number;
@@ -92,7 +92,7 @@ interface IColor {
   };
 }
 
-interface ISlide {
+interface Slajd {
   zadani: {
     hlavni: string;
     rozsirujici?: string;
