@@ -61,11 +61,73 @@ interface CviceniMetadata {
 
 /** Každé cvičení spadá do některých předefinovaných didaktických kategorií. Nyní importované z velké tabulky. */
 interface KlicovaSlovaMetadata {
-  rvp: string[];
-  koncept: string[];
-  b4: string[];
-  historylab: string[];
+  rvp: RVP[];
+  koncept: Koncept[];
+  b4: B4[];
+  historylab: Historylab[];
 }
+
+type RVP =
+  | "české země ve třech stoletích"
+  | "české země ve 20. století"
+  | "Československo 2. pol. 20. století"
+  | "první světová válka"
+  | "důsledky první světové války"
+  | "vznik ČSR"
+  | "politický vývoj ČSR"
+  | "hospodářský vývoj ČSR"
+  | "sociální problémy ČSR"
+  | "národnostní problémy ČSR"
+  | "hospodářská krize"
+  | "druhá světová válka"
+  | "důsledky druhé světové války"
+  | "antisemitismus"
+  | "rasismus"
+  | "totalitní režimy"
+  | "Československo 50. léta"
+  | "Československo 60. léta"
+  | "Československo 70. léta"
+  | "Československo 80. léta"
+  | "vznik České republiky"
+  | "příčiny studené války"
+  | "střetávání západního a východního bloku"
+  | "důsledky studené války"
+  | "kolonialismus"
+  | "dekolonizace"
+  | "problémy současného světa"
+  | "euroatlantická spolupráce"
+  | "technika"
+  | "vzdělání"
+  | "sport"
+  | "zábava";
+
+type Koncept =
+  | "člověk a životní prostředí"
+  | "dějiny ve veřejném prostoru"
+  | "gender"
+  | "každodennost"
+  | "migrace"
+  | "občanská společnost"
+  | "propaganda"
+  | "symboly"
+  | "umění"
+  | "vzpomínková kultura";
+
+type B4 =
+  | "dobové perspektivy"
+  | "příčiny a důsledky"
+  | "trvání a změna"
+  | "vztah k minulosti";
+
+type Historylab =
+  | "tvoříme"
+  | "diskutujeme"
+  | "sestavujeme podloženou odpověď"
+  | "porovnáváme prameny"
+  | "hledáme klíčové detaily"
+  | "formulujeme a ověřujeme hypotézu"
+  | "odhalujeme skrytý záměr pramene"
+  | "domýšlíme významy";
 
 /** Časové údaje cvičení. Slouží zejména k umístění na časové ose. Nyní importované z velké tabulky. */
 interface CasovaOsa {
