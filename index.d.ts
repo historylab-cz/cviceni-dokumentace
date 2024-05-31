@@ -176,7 +176,7 @@ interface Slajd {
   razeni?: Razeni;
   svg?: Svg;
   testKviz?: TestKviz;
-  textovyEditor?: any;
+  textovyEditor?: TextovyEditor;
   uzivatelskyText?: any;
   videoStamps: VideoStamps;
   vyber?: any;
@@ -742,4 +742,32 @@ interface TestKvizZpetnaVazba {
   barva: string; // The color of the feedback
   text: string; // The feedback text
   podminka: number[]; // Array of conditions (number of correct answers)
+}
+
+// ----------------  TextovyEditor (plne nezkontrolovano) ----------------
+
+interface TextovyEditor {
+  galerie?: Galerie; // optional gallery object
+  nastaveni?: TextovyEditorNastaveni;
+  texty: Text[]; // array of text editor objects
+}
+interface TextovyEditorNastaveni {
+    vzhled: "normalni"; // JakInformovaliOHavarii, TODO
+    layout?: string; // optional layout setting for gallery "velka-galerie"
+  };
+interface Text {
+  id: string | number; // unique identifier for the text editor
+  content: string; // content of the editor
+  funkce: 'cteni' | 'predznaceny' | 'zvyraznovani' | 'psani'; // editor function type
+  nazev?: string; // optional name of the editor
+  menu?: MenuPolozka[]; // menu items for zvyraznovani
+  predznaceni?: PredznaceniText[]; // for predznaceny
+}
+interface MenuPolozka {
+  color: string; // color of the marker
+  commandName: string; // command name for the marker id of the marker
+  title: string; // title of the marker
+}
+interface PredznaceniText {
+  vyraz: string; // expression to be premarked
 }
