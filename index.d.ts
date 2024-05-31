@@ -174,7 +174,7 @@ interface Slajd {
   popisky?: Popisky;
   prameny?: Prameny;
   razeni?: Razeni;
-  svg?: any;
+  svg?: Svg;
   testKviz?: any;
   textovyEditor?: any;
   uzivatelskyText?: any;
@@ -596,4 +596,122 @@ type RazeniText = string; //"král"
 interface RazeniSVG {
   soubor: string; // url to pic
   duplikovat: string[]; // id of previous SVG, eg. "svg-1"
+}
+
+// TODO: SVG NOT COMPLETED YET
+// ----------------  SVG (plne nezkontrolovano) ----------------
+
+interface Svg {
+  /**
+  The list of SVG files.
+  */
+  soubory: SvgPolozka[];
+  /**
+  Settings Terela to dragging SVG elements.
+  Example: true
+  */
+  pretahovani?: SvgPretahovani;
+  /**
+  Settings related to the gallery of SVG elements.
+  */
+  galerie?: Galerie;
+  /**
+  Additional settings for the SVG gallery.
+  */
+  nastaveni?: SvgNastaveni;
+}
+
+interface SvgNastaveni {
+  /**
+  The layout setting for the SVG gallery.
+  Possible values: "vertikalni", "horizontalni", "galerie", "velka-galerie"
+  */
+  layout?: string; //horizontalni || galerie || velka-galerie
+  /**
+  Settings related to the order of SVG elements.
+  */
+  poradi?: ISvgPoradi;
+}
+interface ISvgPoradi {
+  /**
+  Indicates if the order is reversed.
+  */
+  obracene?: boolean;
+  /**
+  Indicates if the order is duplicated.
+  */
+  duplikovat?: boolean;
+}
+interface SvgPolozka {
+  soubor: ObrazekSoubor;
+  /**
+  The list of functions applied to the SVG.
+  Example: ["znacky", "kresleni"]
+  */
+  funkce?: string[]; //TODO
+  /**
+  The list of colors used in the SVG.
+  Example: ["blue", "red"]
+  */
+  barvy?: string[];
+  /**
+  Indicates if the SVG file is duplicated.
+  Example: ["id1", "id2"]
+  */
+  duplikovat?: string[];
+  /**
+  Indicates if the SVG file can be dropped.
+  Example: true
+  */
+  drop?: boolean;
+  /**
+  The ID of the SVG element.
+  Example: "svg1"
+  */
+  id: string;
+  /**
+  A description or caption for the SVG.
+  Example: "This is an SVG image."
+  */
+  popisek?: string; //ANO
+  /**
+  The comics data associated with the SVG.
+  */
+  komiks?: SvgKomiks;
+  /**
+   * Pouze prohlizeni? 
+   * Pokud false: ano, pouze prohlizeni
+   * @default true
+   */
+  interactive?: boolean;
+}
+interface SvgKomiks {
+  kategorie: "znacka" | "text"; // text
+  placeholder: string;
+  subkategorie: "promluva" | "myslenka" | "vypravec"; //only if placeholder is selected
+  subjekt: any; //TODO
+  pozice: number[];
+  label: string;
+  barva: string; // only for znacka
+}
+
+interface SvgPretahovani {
+  dataFrom: string[]; // TODO
+  wasDropped: boolean; // default value of wasDroped is true
+  items: SvgPretahovaniPolozka[]; //TODO
+  name: string;
+  id: string;
+  tagName: string;
+}
+interface SvgPretahovaniPolozka {
+  objekt: string | SvgFile; // TODO pro audio, video
+  medium?:
+    | "tag"
+    | "uzivatelsky text"
+    | "obrazek"
+    | "svg"
+    | "audio"
+    | "video"
+    | "text";
+  popisek: string;
 }
