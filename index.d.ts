@@ -236,6 +236,7 @@ enum Funkce {
 // ---------------- Podpurne typy ----------------
 
 /**
+ * Obrázek umístění ve složce img/{slug-cviceni}/{nazev-souboru-vcetne-pripony}
  * @example "to-byla-slava/pic-00-1280w.jpg"
  */
 type ObrazekSoubor = string;
@@ -592,113 +593,171 @@ interface RazeniSVG {
   duplikovat: string[]; // id of previous SVG, eg. "svg-1"
 }
 
-// TODO: SVG NOT COMPLETED YET
-// ----------------  SVG (plne nezkontrolovano) ----------------
+// ----------------  SVG ----------------
 
 interface Svg {
   /**
   The list of SVG files.
   */
   soubory: SvgPolozka[];
-  /**
-  Settings Terela to dragging SVG elements.
-  Example: true
-  */
+  /** Svg podpurný modul s přetahováním položek do obrázku. */
   pretahovani?: SvgPretahovani;
-  /**
-  Settings related to the gallery of SVG elements.
-  */
+  /** Galerie s SVG */
   galerie?: Galerie;
-  /**
-  Additional settings for the SVG gallery.
-  */
+  /** Nastavení layoutu. */
   nastaveni?: SvgNastaveni;
 }
 
 interface SvgNastaveni {
   /**
-  The layout setting for the SVG gallery.
-  Possible values: "vertikalni", "horizontalni", "galerie", "velka-galerie"
-  */
-  layout?: string; //horizontalni || galerie || velka-galerie
+   * Pokud je specifikovaná galerie nebo je příznak 'vertikalni' je nastaven layout modulu na vertikální.
+   * Pokud  je příznak 'horizontalni', 'galerie', 'velka-galerie' je nastaven layout modulu na horizontalni.
+   * @example 'vertikalni' - jak-probihala-stredoveka-invaze
+   * @example 'horizontalni', 'galerie', 'velka-galerie' - mel-si-kleknout
+   */
+  layout?: string;
   /**
-  Settings related to the order of SVG elements.
-  */
+   * Podpůrný modul, zatím použitý v jednom cvičení a pro řazení.
+   *
+   * @example promeny-mesta-zlina
+   */
   poradi?: ISvgPoradi;
 }
 interface ISvgPoradi {
   /**
-  Indicates if the order is reversed.
-  */
+   * Možnost seřadit svg položky obrázeně
+   * @example true - obráceně
+   */
   obracene?: boolean;
   /**
-  Indicates if the order is duplicated.
-  */
+   * Duplikovat pořadí z řazení.
+   * @example true - duplikovat
+   */
   duplikovat?: boolean;
 }
+
 interface SvgPolozka {
   soubor: ObrazekSoubor;
-  /**
-  The list of functions applied to the SVG.
-  Example: ["znacky", "kresleni"]
-  */
-  funkce?: string[]; //TODO
-  /**
-  The list of colors used in the SVG.
-  Example: ["blue", "red"]
-  */
+  /** Seznam funkcí pro svg modul
+   * @param 'text' - textové pole
+   * @param 'kresleni' - kreslení do svg
+   * @param 'znacky' - tečky (značky do svg)
+   * @param 'komiks' - předpřipravené bubliny v svg, do kterých uživatel píše
+   * Prázdné pole pro žádnou funkci (viz. proc-se-rozpadlo-ceskoslovensko)
+   */
+  funkce?: string[];
+  /** Seznam barev, které jsou nabídnuty z nabídky
+   * @example 'blue', 'red'
+   */
   barvy?: string[];
-  /**
-  Indicates if the SVG file is duplicated.
-  Example: ["id1", "id2"]
-  */
+  /** Duplikovat data z předchozího svg. Seznam ID svg, ze kterých chcceme data získat.
+   * @example 'svg-1', 'svg-2'
+   * Příkald: co-chteli-cerni-panteri
+   */
   duplikovat?: string[];
-  /**
-  Indicates if the SVG file can be dropped.
-  Example: true
-  */
+  /** Indikace pokud se na svg dá přetáhnout položka z SvgPretahovani
+   * @param true - ano dá,
+   * @param false - ne nedá
+   */
   drop?: boolean;
-  /**
-  The ID of the SVG element.
-  Example: "svg1"
-  */
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'svg-1'
+   */
   id: string;
-  /**
-  A description or caption for the SVG.
-  Example: "This is an SVG image."
-  */
+  /** Popisek pro SVG
+   */
   popisek?: string; //ANO
+  /** Pokud je v seznamu funkcí položka 'komiks', zde jsou data pro tuto funkci. */
+  komiks?: SvgKomiks[];
   /**
-  The comics data associated with the SVG.
-  */
-  komiks?: SvgKomiks;
-  /**
-   * Pouze prohlizeni? 
+   * Pouze prohlizeni?
    * Pokud false: ano, pouze prohlizeni
    * @default true
    */
   interactive?: boolean;
 }
-interface SvgKomiks {
-  kategorie: "znacka" | "text"; // text
-  placeholder: string;
+
+type SvgKomiks = SvgKomiksText | SvgKomiksZnacka;
+
+interface SvgKomiksText {
+  /** Pro textový komiks je nutno zadat 'text', funguje stejně jako u svg funkcí */
+  kategorie: "text";
+  /**  Text, který se zobrazí jak label, tak placeholder pro textové pole.
+   * Pokud není zadán label a placeholder se určí ze subkategorie
+   * Zatím nikde není použitý
+   */
+  placeholder?: string;
+  /** Použití, pokud placeholder chybí, jinak funkce je stejná. Funguje pro překlad
+   * @param 'promluva' - Promluva...
+   * @param 'myslenka' - Myšlenka...
+   * @param 'vypravec' - Vypravěč...
+   */
   subkategorie: "promluva" | "myslenka" | "vypravec"; //only if placeholder is selected
-  subjekt: any; //TODO
-  pozice: number[];
-  label: string;
+  /** Určuje tvar textové bubliny. Resp. určuje roh, kde má být šipka.
+   * @example ['left', 'top'] nebo ['right', 'bottom']
+   * Příklad: proc-byli-vysidleni
+   */
+  subjekt: ["left" | "right", "top" | "bottom"];
+  /** Pozice levého horního rohu textového pole v svg. X,Y souřadnice
+   * @example 140, 360
+   * Příklad: proc-byli-vysidleni
+   */
+  pozice: [number, number];
+  /** Label pro textové pole, pokud chybí nahradí se placeholder nebo subkategorie */
+  label?: string;
+}
+
+interface SvgKomiksZnacka {
+  /** Pro komiks jako značka je nutno zadat 'znacka', funguje stejně jako u svg funkcí */
+  kategorie: "znacka";
+
+  /** Pozice levého horního rohu značky v svg. X,Y souřadnice.
+   * @example 140, 360
+   * Příklad: proc-byli-vysidleni
+   */
+  pozice: [number, number];
+  /** Barva značky
+   * @example 'blue'
+   */
   barva: string; // only for znacka
 }
 
 interface SvgPretahovani {
-  dataFrom: string[]; // TODO
-  wasDropped: boolean; // default value of wasDroped is true
-  items: SvgPretahovaniPolozka[]; //TODO
+  /**
+   * Nikde nepoužito. Nejspíše kopie předchozího modulu.
+   */
+  dataFrom: string[];
+  /**
+   * Určení, jestli nabídky z položky zešednou, když jsou jednou přetaženy do svg.
+   * Pokud 'true' - Políčka nikdy nezešednou.
+   * @default true
+   */
+  wasDropped: boolean;
+  /**
+   * Skupina položek pro přetahování do svg.
+   */
+  items: SvgPretahovaniPolozka[];
+  /** Název pro skupinu přetahování. */
   name: string;
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'pretahovani-1'
+   */
   id: string;
+  /** Ještě nepoužito. TODO. */
   tagName: string;
 }
 interface SvgPretahovaniPolozka {
-  objekt: string | SvgFile; // TODO pro audio, video
+  objekt:
+    | PretahovaniTag
+    | Otazka
+    | ObrazekSoubor
+    | SvgPolozka
+    | Audio
+    | Video
+    | PretahovaniText;
+  /** Typ média. Odopovídá následně objektu.*/
   medium?:
     | "tag"
     | "uzivatelsky text"
@@ -707,8 +766,17 @@ interface SvgPretahovaniPolozka {
     | "audio"
     | "video"
     | "text";
+  /** Popisek pro přetahování */
   popisek: string;
 }
+
+/**
+ * Tag ve formátu textu;
+ * @example 'lékařské' - jak-se-promenila-obec-marianska
+ */
+type PretahovaniTag = string;
+
+type PretahovaniText = string;
 
 // ----------------  TestKviz (plne nezkontrolovano) ----------------
 
@@ -746,13 +814,13 @@ interface TextovyEditor {
   texty: Text[]; // array of text editor objects
 }
 interface TextovyEditorNastaveni {
-    vzhled: "normalni"; // JakInformovaliOHavarii, TODO
-    layout?: string; // optional layout setting for gallery "velka-galerie"
-  };
+  vzhled: "normalni"; // JakInformovaliOHavarii, TODO
+  layout?: string; // optional layout setting for gallery "velka-galerie"
+}
 interface Text {
   id: string | number; // unique identifier for the text editor
   content: string; // content of the editor
-  funkce: 'cteni' | 'predznaceny' | 'zvyraznovani' | 'psani'; // editor function type
+  funkce: "cteni" | "predznaceny" | "zvyraznovani" | "psani"; // editor function type
   nazev?: string; // optional name of the editor
   menu?: MenuPolozka[]; // menu items for zvyraznovani
   predznaceni?: PredznaceniText[]; // for predznaceny
@@ -769,7 +837,7 @@ interface PredznaceniText {
 // ----------------  UzivatelskyText (plne nezkontrolovano) ----------------
 
 interface UzivatelskyText {
-  galerie?: Galerie;  // Define this more specifically if you know the structure
+  galerie?: Galerie; // Define this more specifically if you know the structure
   novaTabulka?: NovaTabulka; // TODO: zkontrolovat jestli sedi
   layout?: "horizontalni" | "velka-galerie"; // Velka galerie if gallery, horizintalni for otazky
   otazky: Otazka[];
@@ -801,19 +869,19 @@ interface Vyber {
   objekty: VyberPolozka[]; // list of selectable items
 }
 interface VyberNastaveni {
- layout: 'horizontalni' | undefined; // layout type (horizontal or vertical)
-    viceOdpovedi?: boolean; // allows multiple answers if true viceOdpovedi ? "checkbox" : "radio"
-    vybrano: boolean; // initial selection state
-    disableFeedback: boolean; // feedback disabling state
+  layout: "horizontalni" | undefined; // layout type (horizontal or vertical)
+  viceOdpovedi?: boolean; // allows multiple answers if true viceOdpovedi ? "checkbox" : "radio"
+  vybrano: boolean; // initial selection state
+  disableFeedback: boolean; // feedback disabling state
 }
 
 interface VyberPolozka {
-  medium: 'text' | 'uzivatelsky text' | 'audio' | 'video' | 'image'; // media type
+  medium: "text" | "uzivatelsky text" | "audio" | "video" | "image"; // media type
   objekt: string | ObrazekSoubor | Audio | Video; // object file path or content
   spravnaOdpoved: boolean; // indicates if this is the correct answer
   /** Data pro modul uzivatelskyText.
    * otazky => zadani.from
-   * 
+   *
    * @example co-se-dozvime-z-propagandistickych-plakatu
    */
   data?: string; // optional data attribute for the item
@@ -824,7 +892,6 @@ interface VyberZpetnaVazba {
   text: string; // feedback text
   podminka: number[]; // condition to display this feedback based on the number of correct answers
 }
-
 
 // TODO: Galerie NOT COMPLETED YET
 // ----------------  Galerie (plne nezkontrolovano) ----------------
@@ -871,4 +938,4 @@ interface GaleriePolozka {
   Example: "example_large.jpg"
   */
   zvetseny?: string;
-  }
+}
