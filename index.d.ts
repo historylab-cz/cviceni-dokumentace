@@ -245,7 +245,7 @@ enum Funkce {
  */
 type ObrazekSoubor = string;
 
-// ----------------  ImitaceMapy ----------------
+// ---------------- ImitaceMapy ----------------
 
 /** Modul Imitace mapy, přepínání vrstev, kdy každá vrsta je obrázek
  *
@@ -267,7 +267,7 @@ interface ImitaceMapyVrstva {
   nazev: string; // name of the map to the button
 }
 
-// ----------------  KlicovaSlova ----------------
+// ---------------- KlicovaSlova ----------------
 
 /** Modul klíčová slova
  *
@@ -335,7 +335,7 @@ interface KlicovaSlovaInherit {
   from: string[];
 }
 
-// ----------------  Média ----------------
+// ---------------- Média ----------------
 
 /** Modul média
  *
@@ -443,15 +443,21 @@ interface VideoTitulky {
   soubor: string;
 }
 
-// ----------------  Nova Tabulka (plne nezkontrolovano) ----------------
-/** Tabulka
+// ---------------- Nova Tabulka (Velmi složité na zkontrolování) ----------------
+/** Tabulka, nejdříve se definují řádky a poté sloupce.
  *
  * @example husitstvi-a-historici
  */
 interface NovaTabulka {
+  /** Rozšíření o doplňkovou galerii */
   galerie?: Galerie[];
-  layout?: string;
-  pretahovani?: NovaTabulkaPretahovani;
+  /**
+   * Pokud nezadáno, jedná se o malou galerii.
+   */
+  layout?: 'velka-galerie';
+  /** Rozšíření o modul přetahování */
+  pretahovani?: Pretahovani;
+  /** Seznam tabulek */
   tabulky: Tabulka[];
 }
 interface Tabulka {
@@ -471,6 +477,26 @@ interface Tabulka {
   dataFrom?: string[];
 }
 
+// TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
+interface TabulkaRadek {
+  /** Unikátní identifikátor napříč tabulkou
+  * Příklad: k-cemu-jsou-nam-vyroci
+  * @example 'obrazek'
+  */
+ id: string;
+ /** Název řádku */
+ name?: string;
+ /** Typ řádku. TODO */
+ type: {
+   name: string; //"drop"
+   type: string; // "obrazek", "tag"
+   textId: string; //"textovy-editor-2"
+ } | "";
+ /** Hodnoty pro řádek (ještě  nikde nepoužito) */
+ values?: (string | number)[];
+}
+
+// TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
 interface TabulkaSloupec {
   /** Unikátní identifikátor napříč cvičením
    *
@@ -480,14 +506,13 @@ interface TabulkaSloupec {
   /** Název sloupce */
   name?: string;
   /** Typ sloupce
-   *
-   * @example // TODO:  "tag"
    * @example proc-resit-zidovskou-otazku
    */
   type?: {
     name: string; //"drop" "select" "dup-text"
     type: string; //"tag"
     tagName?: string;
+    /** Kolik možností se dá přetáhnbout do tohoto sloupce */
     number?: number;
     options?: string[];
     attributes?: Record<string, string>; // V kodu je, ale nikde jsem nenasel pouziti
@@ -498,39 +523,7 @@ interface TabulkaSloupec {
   };
   values?: (string | number)[];
 }
-interface TabulkaRadek {
-  id: string;
-  name?: string;
-  type: {
-    name: string; //"drop"
-    type: string;
-    textId: string; //"textovy-editor-2"
-  };
-  values?: (string | number)[];
-}
 
-interface NovaTabulkaPretahovani {
-  dataFrom?: string[];
-  wasDropped?: boolean;
-  name?: string;
-  id: string;
-  tagName: string;
-  items?: PretahovaniData[];
-}
-
-interface PretahovaniData {
-  objekt: string;
-  medium:
-    | "tag"
-    | "uzivatelsky text"
-    | "obrazek"
-    | "svg"
-    | "audio"
-    | "video"
-    | "text"
-    | string;
-  popisek?: string;
-}
 
 // ----------------  Video Stamps (plne nezkontrolovano) ----------------
 
@@ -597,7 +590,7 @@ interface RazeniSVG {
   duplikovat: string[]; // id of previous SVG, eg. "svg-1"
 }
 
-// ----------------  SVG ----------------
+// ---------------- SVG ----------------
 
 interface Svg {
   /**
@@ -605,7 +598,7 @@ interface Svg {
   */
   soubory: SvgPolozka[];
   /** Svg podpurný modul s přetahováním položek do obrázku. */
-  pretahovani?: SvgPretahovani;
+  pretahovani?: Pretahovani;
   /** Galerie s SVG */
   galerie?: Galerie;
   /** Nastavení layoutu. */
@@ -659,7 +652,7 @@ interface SvgPolozka {
    * Příkald: co-chteli-cerni-panteri
    */
   duplikovat?: string[];
-  /** Indikace pokud se na svg dá přetáhnout položka z SvgPretahovani
+  /** Indikace pokud se na svg dá přetáhnout položka z Pretahovani
    * @param true - ano dá,
    * @param false - ne nedá
    */
@@ -727,7 +720,8 @@ interface SvgKomiksZnacka {
   barva: string; // only for znacka
 }
 
-interface SvgPretahovani {
+/** Modul přetahování, fungující pro modul SVG a NovaTabulka */
+interface Pretahovani {
   /**
    * Nikde nepoužito. Nejspíše kopie předchozího modulu.
    */
@@ -739,9 +733,9 @@ interface SvgPretahovani {
    */
   wasDropped: boolean;
   /**
-   * Skupina položek pro přetahování do svg.
+   * Skupina položek pro přetahování do svg nebo tabulky.
    */
-  items: SvgPretahovaniPolozka[];
+  items: PretahovaniPolozka[];
   /** Název pro skupinu přetahování. */
   name: string;
   /** Unikátní identifikátor napříč cvičením
@@ -752,7 +746,7 @@ interface SvgPretahovani {
   /** Ještě nepoužito. TODO. */
   tagName: string;
 }
-interface SvgPretahovaniPolozka {
+interface PretahovaniPolozka {
   objekt:
     | PretahovaniTag
     | Otazka
