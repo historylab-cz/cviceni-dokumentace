@@ -454,7 +454,7 @@ interface NovaTabulka {
   /**
    * Pokud nezadáno, jedná se o malou galerii.
    */
-  layout?: 'velka-galerie';
+  layout?: "velka-galerie";
   /** Rozšíření o modul přetahování */
   pretahovani?: Pretahovani;
   /** Seznam tabulek */
@@ -480,20 +480,22 @@ interface Tabulka {
 // TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
 interface TabulkaRadek {
   /** Unikátní identifikátor napříč tabulkou
-  * Příklad: k-cemu-jsou-nam-vyroci
-  * @example 'obrazek'
-  */
- id: string;
- /** Název řádku */
- name?: string;
- /** Typ řádku. TODO */
- type: {
-   name: string; //"drop"
-   type: string; // "obrazek", "tag"
-   textId: string; //"textovy-editor-2"
- } | "";
- /** Hodnoty pro řádek (ještě  nikde nepoužito) */
- values?: (string | number)[];
+   * Příklad: k-cemu-jsou-nam-vyroci
+   * @example 'obrazek'
+   */
+  id: string;
+  /** Název řádku */
+  name?: string;
+  /** Typ řádku. TODO */
+  type:
+    | {
+        name: string; //"drop"
+        type: string; // "obrazek", "tag"
+        textId: string; //"textovy-editor-2"
+      }
+    | "";
+  /** Hodnoty pro řádek (ještě  nikde nepoužito) */
+  values?: (string | number)[];
 }
 
 // TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
@@ -524,12 +526,11 @@ interface TabulkaSloupec {
   values?: (string | number)[];
 }
 
-
 // ----------------  Video Stamps ----------------
 
 /**
  * Modul pro přidávání razítek do videa.
- * 
+ *
  * Příklad: o-cem-se-hadaji-v-rodine
  */
 interface VideoStamps {
@@ -539,7 +540,7 @@ interface VideoStamps {
 
 /** Hlavním prvkem je typ Video, který je rozšířen o id a jednolitvé razítka */
 interface VideoStampData extends Video {
-   /** Unikátní identifikátor napříč cvičením
+  /** Unikátní identifikátor napříč cvičením
    *
    * @example 'videostamp-1'
    */
@@ -554,12 +555,12 @@ interface NastaveniVideoStamp {
 }
 
 interface Stamp {
-    /** Unikátní číslo napříč video stamp
+  /** Unikátní číslo napříč video stamp
    *
    * @example 1
    */
   id: number;
-    /** Emoji razítko
+  /** Emoji razítko
    *
    * @example 😠
    */
@@ -576,39 +577,97 @@ type Popisky = string[];
 /** Jednoduchý modul pro zobrazení oibrázků. Řadí se horizontálně. */
 type Prameny = ObrazekSoubor[];
 
-// ----------------  Razeni (plne nezkontrolovano) ----------------
+// ----------------  Razeni ----------------
 
 interface Razeni {
+  /** Unikátní číslo napříč video stamp
+   *
+   * @example 'razeni-1'
+   */
   id: string;
-  typ: "horizontalni" | "vertikalni"; // layout of razeni
-  zpetnaVazba?: RazeniZpetnaVazba[]; // Define a more specific type if the structure is known
+  /**
+   * Layout řazení, horizontální nebo vertikální.
+   */
+  typ: "horizontalni" | "vertikalni";
+  /** Definuje zpětnou vazbu pro řazení. */
+  zpetnaVazba?: RazeniZpetnaVazba[];
+  /** Seznam položek pro řazení */
   objekty: RazeniPolozka[];
 }
 // TODO: generalizovat
 interface RazeniZpetnaVazba {
   /**
-   * how many wrong position is set (0 - all correct, 1 - one wrong, 2 - two or more wrong)
+   * Učuje kolik pohybů je potřeba, aby se řazení seřadilo správně
+   * @param 0 - vše je správně
+   * @param 1 - jedna položka je na špatném místě
+   * @param 2 - 2 a více položek je na špatném místě
    */
   podminka: 0 | 1 | 2;
-  text: string; // text of the button for zpertnaVazba
+  /** Text tlačítka u zpětné vazby
+   * @example "Jednu fotografii bychom uspořádali odlišně."
+   */
+  text: string;
+  /** Brava tlačítka zpětné vazby */
   barva: "color-red" | "color-orange" | "color-green"; // color of the button for zpertnaVazba
 }
-// TODO: generalizovat, polozka je bud obrazek, audio, text nebo video a rozsiri se o id, spravnaOdpoved atd. ASI
-interface RazeniPolozka {
-  id: string;
-  medium: "audio" | "video" | "uzivatelsky text" | "obrazek" | "svg" | "text";
-  spravnaOdpoved?: number; // position where this item is correct. ()
-  popisek?: string;
-  nazev?: string; // For AUDIO only, name of the audio procByliUneseni
-  objekt: RazeniText | Audio | RazeniSVG | ObrazekSoubor | Video;
-}
-//If medium is text:
-type RazeniText = string; //"král"
 
-// TODO: zkontrolovat generalizovat
-interface RazeniSVG {
-  soubor: string; // url to pic
-  duplikovat: string[]; // id of previous SVG, eg. "svg-1"
+type RazeniPolozka =
+  | RazeniPolozkaText
+  | RazeniPolozkaAudio
+  | RazeniPolozkaVideo
+  | RazeniPolozkaUzivatelskyText
+  | RazeniPolozkaSVG
+  | RazeniPolozkaObrazek;
+
+interface RazeniPolozkaBase {
+  /** Unikátní číslo napříč řazením
+   *
+   * @example 'razeni-svg-1'
+   */
+  id?: string;
+  medium;
+  /** pozice, na které je tato položka správně (od 1 - N)
+   * @example '1'
+   */
+  spravnaOdpoved?: string;
+  /** Popisek položky */
+  popisek?: string;
+  objekt;
+}
+
+interface RazeniPolozkaText extends RazeniPolozkaBase {
+  medium: "text";
+  /** Text pro řazení
+   * @example 'král'
+   */
+  objekt: string;
+}
+
+interface RazeniPolozkaAudio extends RazeniPolozkaBase {
+  medium: "audio";
+  objekt: Audio;
+  /** Název pro audio přehrávač
+   *
+   * Příklad: proc-byli-uneseni
+   */
+  nazev?: string;
+}
+interface RazeniPolozkaVideo extends RazeniPolozkaBase {
+  medium: "video";
+  objekt: Video;
+}
+/** Nikde nepoužito, nejspíše nefunguje */
+interface RazeniPolozkaUzivatelskyText extends RazeniPolozkaBase {
+  medium: "uzivatelsky text";
+  objekt: Otazka;
+}
+interface RazeniPolozkaSVG extends RazeniPolozkaBase {
+  medium: "svg";
+  objekt: SvgPolozka;
+}
+interface RazeniPolozkaObrazek extends RazeniPolozkaBase {
+  medium: "obrazek";
+  objekt: ObrazekSoubor;
 }
 
 // ---------------- SVG ----------------
