@@ -525,25 +525,46 @@ interface TabulkaSloupec {
 }
 
 
-// ----------------  Video Stamps (plne nezkontrolovano) ----------------
+// ----------------  Video Stamps ----------------
 
+/**
+ * Modul pro přidávání razítek do videa.
+ * 
+ * Příklad: o-cem-se-hadaji-v-rodine
+ */
 interface VideoStamps {
   video: VideoStampData;
   nastaveni: NastaveniVideoStamp;
 }
 
+/** Hlavním prvkem je typ Video, který je rozšířen o id a jednolitvé razítka */
 interface VideoStampData extends Video {
+   /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'videostamp-1'
+   */
   id: string;
+  /** Seznam razítek */
   stamps: Stamp[];
 }
 
-// TODO: sjednotit nastaveni
+/** Nastavení layoutu videa */
 interface NastaveniVideoStamp {
   layout: "vertikalni" | "galerie" | "velka-galerie" | "horizontalni";
 }
+
 interface Stamp {
-  id: string;
-  emoji: string; // Emoji 😠
+    /** Unikátní číslo napříč video stamp
+   *
+   * @example 1
+   */
+  id: number;
+    /** Emoji razítko
+   *
+   * @example 😠
+   */
+  emoji: string;
+  /** Legenda pro emoji */
   popisek?: string;
 }
 
