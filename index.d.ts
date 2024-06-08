@@ -568,12 +568,12 @@ interface Stamp {
   popisek?: string;
 }
 
-// ----------------  Popisky (plne nezkontrolovano) ----------------
-
+// ----------------  Popisky ----------------
+/** Textové popisky. Řadí se horizontálně. */
 type Popisky = string[];
 
-// ----------------  Prameny (plne nezkontrolovano) ----------------
-
+// ----------------  Prameny ----------------
+/** Jednoduchý modul pro zobrazení oibrázků. Řadí se horizontálně. */
 type Prameny = ObrazekSoubor[];
 
 // ----------------  Razeni (plne nezkontrolovano) ----------------
