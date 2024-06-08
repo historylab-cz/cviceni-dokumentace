@@ -5,7 +5,7 @@ interface Cviceni {
   /** Metadata ke cvičení */
   cviceni: CviceniMetadata;
   /** Obsah cvičení tedy jednotlivé slajdy */
-  slajd: Slajd[];
+  slajd: CviceniSlajd[];
 }
 
 interface CviceniMetadata {
@@ -67,67 +67,71 @@ interface KlicovaSlovaMetadata {
   historylab: Historylab[];
 }
 
-type RVP =
-  | "české země ve třech stoletích"
-  | "české země ve 20. století"
-  | "Československo 2. pol. 20. století"
-  | "první světová válka"
-  | "důsledky první světové války"
-  | "vznik ČSR"
-  | "politický vývoj ČSR"
-  | "hospodářský vývoj ČSR"
-  | "sociální problémy ČSR"
-  | "národnostní problémy ČSR"
-  | "hospodářská krize"
-  | "druhá světová válka"
-  | "důsledky druhé světové války"
-  | "antisemitismus"
-  | "rasismus"
-  | "totalitní režimy"
-  | "Československo 50. léta"
-  | "Československo 60. léta"
-  | "Československo 70. léta"
-  | "Československo 80. léta"
-  | "vznik České republiky"
-  | "příčiny studené války"
-  | "střetávání západního a východního bloku"
-  | "důsledky studené války"
-  | "kolonialismus"
-  | "dekolonizace"
-  | "problémy současného světa"
-  | "euroatlantická spolupráce"
-  | "technika"
-  | "vzdělání"
-  | "sport"
-  | "zábava";
+enum RVP {
+  ČeskéZeměVeTřechStoletích = "české země ve třech stoletích",
+  ČeskéZeměVe20Století = "české země ve 20. století",
+  Československo2Pol20Století = "Československo 2. pol. 20. století",
+  PrvníSvětováVálka = "první světová válka",
+  DůsledkyPrvníSvětovéVálky = "důsledky první světové války",
+  VznikČSR = "vznik ČSR",
+  PolitickýVývojČSR = "politický vývoj ČSR",
+  HospodářskýVývojČSR = "hospodářský vývoj ČSR",
+  SociálníProblémyČSR = "sociální problémy ČSR",
+  NárodnostníProblémyČSR = "národnostní problémy ČSR",
+  HospodářskáKrize = "hospodářská krize",
+  DruháSvětováVálka = "druhá světová válka",
+  DůsledkyDruhéSvětovéVálky = "důsledky druhé světové války",
+  Antisemitismus = "antisemitismus",
+  Rasismus = "rasismus",
+  TotalitníRežimy = "totalitní režimy",
+  Československo50Léta = "Československo 50. léta",
+  Československo60Léta = "Československo 60. léta",
+  Československo70Léta = "Československo 70. léta",
+  Československo80Léta = "Československo 80. léta",
+  VznikČeskéRepubliky = "vznik České republiky",
+  PříčinyStudenéVálky = "příčiny studené války",
+  StřetáváníZápadníhoAVýchodníhoBloku = "střetávání západního a východního bloku",
+  DůsledkyStudenéVálky = "důsledky studené války",
+  Kolonialismus = "kolonialismus",
+  Dekolonizace = "dekolonizace",
+  ProblémySoučasnéhoSvěta = "problémy současného světa",
+  EuroatlantickáSpolupráce = "euroatlantická spolupráce",
+  Technika = "technika",
+  Vzdělání = "vzdělání",
+  Sport = "sport",
+  Zábava = "zábava",
+}
 
-type Koncept =
-  | "člověk a životní prostředí"
-  | "dějiny ve veřejném prostoru"
-  | "gender"
-  | "každodennost"
-  | "migrace"
-  | "občanská společnost"
-  | "propaganda"
-  | "symboly"
-  | "umění"
-  | "vzpomínková kultura";
+enum Koncept {
+  ČlověkAŽivotníProstředí = "člověk a životní prostředí",
+  DějinyVeVeřejnémProstoru = "dějiny ve veřejném prostoru",
+  Gender = "gender",
+  Každodennost = "každodennost",
+  Migrace = "migrace",
+  ObčanskáSpolečnost = "občanská společnost",
+  Propaganda = "propaganda",
+  Symboly = "symboly",
+  Umění = "umění",
+  VzpomínkováKultura = "vzpomínková kultura",
+}
 
-type B4 =
-  | "dobové perspektivy"
-  | "příčiny a důsledky"
-  | "trvání a změna"
-  | "vztah k minulosti";
+enum B4 {
+  DobovéPerspektivy = "dobové perspektivy",
+  PříčinyADůsledky = "příčiny a důsledky",
+  TrváníAZměna = "trvání a změna",
+  VztahKMinulosti = "vztah k minulosti",
+}
 
-type Historylab =
-  | "tvoříme"
-  | "diskutujeme"
-  | "sestavujeme podloženou odpověď"
-  | "porovnáváme prameny"
-  | "hledáme klíčové detaily"
-  | "formulujeme a ověřujeme hypotézu"
-  | "odhalujeme skrytý záměr pramene"
-  | "domýšlíme významy";
+enum Historylab {
+  Tvoříme = "tvoříme",
+  Diskutujeme = "diskutujeme",
+  SestavujemePodloženouOdpověď = "sestavujeme podloženou odpověď",
+  PorovnávámePrameny = "porovnáváme prameny",
+  HledámeKlíčovéDetaily = "hledáme klíčové detaily",
+  FormulujemeAOvěřujemeHypotézu = "formulujeme a ověřujeme hypotézu",
+  OdhalujemeSkrytýZáměrPramene = "odhalujeme skrytý záměr pramene",
+  DomýšlímeVýznamy = "domýšlíme významy",
+}
 
 /** Časové údaje cvičení. Slouží zejména k umístění na časové ose. Nyní importované z velké tabulky. */
 interface CasovaOsa {
@@ -155,7 +159,7 @@ interface Color {
   };
 }
 
-interface Slajd {
+interface CviceniSlajd {
   zadani: {
     hlavni: string;
     rozsirujici?: string;
