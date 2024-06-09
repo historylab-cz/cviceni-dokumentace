@@ -1039,38 +1039,97 @@ interface ZadaniZVyberu {
   placeholder: string;
 }
 
-// ----------------  Vyber (plne nezkontrolovano) ----------------
+// ----------------  Vyber ----------------
 
 interface Vyber {
-  id: string; // unique identifier for the selectable component
+  /** Unikátní identifikátor napříč cvičením.
+   * @example 'vyber-1'
+   */
+  id: string;
   nastaveni: VyberNastaveni;
-  galerie?: Galerie; // gallery object if exists
-  zpetnaVazba?: VyberZpetnaVazba[]; // feedback settings
-  objekty: VyberPolozka[]; // list of selectable items
+  galerie?: Galerie;
+  zpetnaVazba?: VyberZpetnaVazba[];
+  objekty: VyberPolozka[];
 }
 interface VyberNastaveni {
-  layout: "horizontalni" | undefined; // layout type (horizontal or vertical)
-  viceOdpovedi?: boolean; // allows multiple answers if true viceOdpovedi ? "checkbox" : "radio"
-  vybrano: boolean; // initial selection state
-  disableFeedback: boolean; // feedback disabling state
+  /** Layout výběru.
+   * @default 'horizontalni'
+   */
+  layout?: "horizontalni";
+  /** Určuje jestli se dá vybrat více jak jedna odpověď.
+   * @example true - více odpovědí
+   */
+  viceOdpovedi?: boolean;
+  /** Pouze pokud je víceOdpovedi nastaveno na 'true'.
+   * @example true - všechny položky jsou defaultně vybrány (uživatel odebírá vybrání)
+   */
+  vybrano?: boolean;
+  /** Určuje, jeslti se má zobrazit tlačítko se zpětnou vazbou, či ne.
+   * @example true - tlačítko se zpětnou vazbou se nezobrazí.
+   */
+  disableFeedback?: boolean; // feedback disabling state
 }
 
-interface VyberPolozka {
-  medium: "text" | "uzivatelsky text" | "audio" | "video" | "image"; // media type
-  objekt: string | ObrazekSoubor | Audio | Video; // object file path or content
-  spravnaOdpoved: boolean; // indicates if this is the correct answer
-  /** Data pro modul uzivatelskyText.
-   * otazky => zadani.from
-   *
-   * @example co-se-dozvime-z-propagandistickych-plakatu
-   */
-  data?: string; // optional data attribute for the item
-}
 // TODO: generalizovat
 interface VyberZpetnaVazba {
-  barva: string; // feedback color
-  text: string; // feedback text
-  podminka: number[]; // condition to display this feedback based on the number of correct answers
+  /** Brava tlačítka zpětné vazby */
+  barva: string;
+  /** Text tlačítka u zpětné vazby
+   * @example "Vybrali jsme jinou položku."
+   */
+  text: string;
+  /** Určuje kolik odpovědí je správně označeno vybráno / nevybráno. Pro viceOdpovedi = false je potřeba brát v potaz, nevybrané položky.
+   * @example 0 - všechny položky mají chybné vybrání (ty co nemají být vybráné, vybrané jsou a naopak)
+   * @example 5 - 5 položek je správně vybraných (nevybraných). (ty co nemají být vybráné, josu nevybrané, ty co vybrané jsou jsou správně vybrané, celkový počet je 5)
+   */
+  podminka: number[];
+}
+
+type VyberPolozka =
+  | VyberText
+  | VyberUzivatelskyText
+  | VyberAudio
+  | VyberVideo
+  | VyberImage;
+
+interface VyberPolozkaBase {
+  /** Typ média */
+  medium;
+   /** Data pro médium */
+  objekt;
+  /** Definuje, pokud má být tato položka vybraná, či ne.
+   * @example true - ano má být vybrána.
+   */
+  spravnaOdpoved?: boolean;
+  /** Data pro modul uzivatelskyText. Zobrazuje zadaní pro otázku.
+   * otazky => zadani.from
+   * @example co-se-dozvime-z-propagandistickych-plakatu
+   */
+  data?: string;
+}
+
+interface VyberText extends VyberPolozkaBase {
+  medium: "text";
+  objekt: string;
+}
+interface VyberUzivatelskyText extends VyberPolozkaBase {
+  medium: "uzivatelsky text";
+  objekt: Otazka;
+}
+
+interface VyberAudio extends VyberPolozkaBase {
+  medium: "audio";
+  objekt: Audio;
+}
+
+interface VyberVideo extends VyberPolozkaBase {
+  medium: "video";
+  objekt: Video;
+}
+
+interface VyberImage extends VyberPolozkaBase {
+  medium: "image";
+  objekt: ObrazekSoubor;
 }
 
 // TODO: Galerie NOT COMPLETED YET
