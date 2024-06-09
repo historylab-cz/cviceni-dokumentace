@@ -1095,7 +1095,7 @@ type VyberPolozka =
 interface VyberPolozkaBase {
   /** Typ média */
   medium;
-   /** Data pro médium */
+  /** Data pro médium */
   objekt;
   /** Definuje, pokud má být tato položka vybraná, či ne.
    * @example true - ano má být vybrána.
@@ -1132,49 +1132,30 @@ interface VyberImage extends VyberPolozkaBase {
   objekt: ObrazekSoubor;
 }
 
-// TODO: Galerie NOT COMPLETED YET
-// ----------------  Galerie (plne nezkontrolovano) ----------------
+// ----------------  Galerie ----------------
 
 type Galerie = GaleriePolozka[];
 
 interface GaleriePolozka {
-  /**
-  The type of the gallery item.
-  Example: "svg", "text", "vyber"
-  */
-  typ?: string;
-  /**
-  The content or object associated with the gallery item.
-  For "svg", this might be the SVG content.
-  For "text", this might be the text content.
-  */
-  objekt?: any; // ISVGObject, string (Text string)
-  /**
-  The caption or description of the gallery item.
-  Example: "This is an SVG image." only if type §SVG§ and §text§ or no type
-  */
+  /** Určuje, jestli je položka nějaký specifický typ (modul) ze cvičení. */
+  typ?: "svg" | "text" | "vyber";
+  /** Popisek pro položku. Nachází se uvnitř položky */
   popisek?: string;
-  /**
-  The list of IDs for duplicated text sources.
-  Applicable when typ is "text".
-  */
+  /** Objekt pro vybraný typ.
+   * Pro 'svg' - SvgPolozka
+   * Pro 'text' - text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, ze kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
+   */
+  objekt?: SvgPolozka | string;
+
+  /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
+   * Příklad: co-se-stalo-v-zime-1970 */
   duplikovat?: string[];
-  /**
-  The selected ID for items of type "vyber".
-  Applicable when typ is "vyber".
-  */
+  /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
+   * co-se-dozvime-z-propagandistickych-plakatu
+   */
   vyberId?: string;
-  /**
-  The filename of the media file (image, audio, or video).
-  Example: "example.jpg" //IF no type, it is an file
-  if audio and if "velka-galerie": classic audio-player else audioPlayerSimple
-  if image
-  */
-  soubor?: string;
-  /**
-  The enlarged version of the image file.
-  Applicable when the gallery item is an image.
-  Example: "example_large.jpg"
-  */
-  zvetseny?: string;
+  /** Pokud není definovaný typ, jedná se o Obrázek, Video nebo Audio */
+  soubor?: ObrazekSoubor | Video | Audio;
+  /** Pouze pro soubor obrázek ["jpg", "jpeg", "png", "gif"], který je v gallerii. Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
+  zvetseny?: ObrazekSoubor;
 }
