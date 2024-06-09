@@ -915,32 +915,63 @@ interface KvizOdpoved {
   selected?: boolean;
 }
 
-// ----------------  TextovyEditor (plne nezkontrolovano) ----------------
+// ----------------  TextovyEditor ----------------
 
 interface TextovyEditor {
-  galerie?: Galerie; // optional gallery object
+  galerie?: Galerie;
   nastaveni?: TextovyEditorNastaveni;
-  texty: Text[]; // array of text editor objects
+  /** Seznam textů. Kždý text je samostatný editor. */
+  texty: Text[];
 }
+/** Nastavení layoutu pro TextovyEditor */
 interface TextovyEditorNastaveni {
-  vzhled: "normalni"; // JakInformovaliOHavarii, TODO
-  layout?: string; // optional layout setting for gallery "velka-galerie"
+  layout?: "velka-galerie";
 }
+
 interface Text {
-  id: string | number; // unique identifier for the text editor
-  content: string; // content of the editor
-  funkce: "cteni" | "predznaceny" | "zvyraznovani" | "psani"; // editor function type
-  nazev?: string; // optional name of the editor
-  menu?: MenuPolozka[]; // menu items for zvyraznovani
-  predznaceni?: PredznaceniText[]; // for predznaceny
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'textovy-editor-1'¨
+   * @example 1 - prefix je doplněn automaticky
+   */
+  id: string | number;
+  /** Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}
+    * @example "text-00"
+   */
+  text: string;
+  /** Děfinice funkce, kterou editor má plnit.
+   * @param cteni - pouhé čtení, nic se nedá editovat
+   * @param predznaceny - v editoru jsou předznačené části, které se dají označovat
+   * @param zvyraznovani - editor umožňuje označit nějakou pasáž textu, zde se přidává kontext menu
+   */
+  funkce: "cteni" | "predznaceny" | "zvyraznovani";
+  /** TODO: Asi k ničemu?  */
+  nazev?: string;
+  /** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
+  menu?: MenuPolozka[];
+  /** Pouze pro funkci predznaceny. */
+  predznaceni?: PredznaceniText[];
 }
+
+/** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
 interface MenuPolozka {
-  color: string; // color of the marker
-  commandName: string; // command name for the marker id of the marker
-  title: string; // title of the marker
+  /** Barva položky. */
+  color: string;
+  /** Unikátní identifikátor napříč textovým editorem.  */
+  commandName: string;
+  /** Název položky */
+  title: string;
 }
+
+/** Pouze pro funkci predznaceny */
 interface PredznaceniText {
-  vyraz: string; // expression to be premarked
+  /** Výraz v textu, který má být předznačen. */
+  vyraz: string;
+  /** Data předávající se do textového editoru. 
+   * TODO: nevím  čemu to je.
+   * Příklad: k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77
+   */
+  data?: any;
 }
 
 // ----------------  UzivatelskyText (plne nezkontrolovano) ----------------
