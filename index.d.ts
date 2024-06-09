@@ -516,6 +516,9 @@ interface TabulkaSloupec {
     tagName?: string;
     /** Kolik možností se dá přetáhnbout do tohoto sloupce */
     number?: number;
+    /**
+     * Příklad: k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77
+     */
     options?: string[];
     attributes?: Record<string, string>; // V kodu je, ale nikde jsem nenasel pouziti
     /**
@@ -597,7 +600,7 @@ interface Razeni {
 // TODO: generalizovat
 interface RazeniZpetnaVazba {
   /**
-   * Učuje kolik pohybů je potřeba, aby se řazení seřadilo správně
+   * Určuje kolik pohybů je potřeba, aby se řazení seřadilo správně
    * @param 0 - vše je správně
    * @param 1 - jedna položka je na špatném místě
    * @param 2 - 2 a více položek je na špatném místě
@@ -608,7 +611,7 @@ interface RazeniZpetnaVazba {
    */
   text: string;
   /** Brava tlačítka zpětné vazby */
-  barva: "color-red" | "color-orange" | "color-green"; // color of the button for zpertnaVazba
+  barva: "color-red" | "color-orange" | "color-green";
 }
 
 type RazeniPolozka =
@@ -853,35 +856,63 @@ interface PretahovaniPolozka {
  * @example 'lékařské' - jak-se-promenila-obec-marianska
  */
 type PretahovaniTag = string;
-
+/** Text jako uživatelské pole */
 type PretahovaniText = string;
 
-// ----------------  TestKviz (plne nezkontrolovano) ----------------
+// ----------------  TestKviz ----------------
 
 interface TestKviz {
-  id?: string; // Optional ID for the test quiz
-  galerie?: Galerie; // Optional gallery object
+  /** Unikátní identifikátor napříč cvičením
+   *
+   * @example 'test-kviz-1'
+   */
+  id: string;
+  galerie?: Galerie;
   nastaveni?: TestKvizNastaveni;
-  zadani: Otazka[]; // Array of questions
   zpetnaVazba?: TestKvizZpetnaVazba[]; // Optional array of feedback objects - procjeVelkaBritaniezemicaje
+  zadani: KvizOtazka[]; // Array of questions
 }
+/** Nastavení layoutu pro TestKviz */
 interface TestKvizNastaveni {
-  layout?: "horizontal"; // Optional layout setting
+  layout?: "velka-galerie";
 }
-interface Otazka {
-  otazka: string; // The question text
-  odpovedi: Odpoved[]; // Array of answer options
-  spravnaOdpoved: number; // Index of the correct answer (1-based)
-}
-interface Odpoved {
-  text: string; // The text of the answer option
-  selected?: boolean; // Optional boolean indicating if this option is selected
-}
+
 // TODO: generalizovat
 interface TestKvizZpetnaVazba {
-  barva: string; // The color of the feedback
-  text: string; // The feedback text
-  podminka: number[]; // Array of conditions (number of correct answers)
+  /**
+   * Určuje kolik je správných odpovědí.
+   * @example 0 - žádná odpověď není správná
+   * @param 1,2 - jedna nebo dvě odpovědi jsou správné
+   * @param 8 - 8 odpovědí je správných
+   */
+  podminka: number[];
+  /** Text tlačítka u zpětné vazby
+   * @example "Jednu fotografii bychom uspořádali odlišně."
+   */
+  text: string;
+  /** Brava tlačítka zpětné vazby */
+  barva: "color-red" | "color-orange" | "color-green";
+}
+
+interface KvizOtazka {
+  /** Textová otázka.
+   * @example 'Ženy se neúčastnily hostiny – byly společensky méně významné než muži.'
+   * Příklad: jak-zobrazili-sumerskou-spolecnost
+   */
+  otazka: string;
+  /** Výčet odpovědí pro otázku. */
+  odpovedi: KvizOdpoved[];
+  /** Pořadí na jakém je správná odpověď.
+   * @example 1 - soprávná odpověd je na první zadefinovaná odpověď.
+   */
+  spravnaOdpoved: number;
+}
+
+interface KvizOdpoved {
+  /** Text odpovědi. */
+  text: string;
+  /** Má tato odpověď být vybrána jako defaultní? */
+  selected?: boolean;
 }
 
 // ----------------  TextovyEditor (plne nezkontrolovano) ----------------
