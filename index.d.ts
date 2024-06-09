@@ -931,12 +931,12 @@ interface TextovyEditorNastaveni {
 interface Text {
   /** Unikátní identifikátor napříč cvičením
    *
-   * @example 'textovy-editor-1'¨
+   * @example 'textovy-editor-1'
    * @example 1 - prefix je doplněn automaticky
    */
   id: string | number;
   /** Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}
-    * @example "text-00"
+   * @example "text-00"
    */
   text: string;
   /** Děfinice funkce, kterou editor má plnit.
@@ -967,36 +967,76 @@ interface MenuPolozka {
 interface PredznaceniText {
   /** Výraz v textu, který má být předznačen. */
   vyraz: string;
-  /** Data předávající se do textového editoru. 
+  /** Data předávající se do textového editoru.
    * TODO: nevím  čemu to je.
    * Příklad: k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77
    */
   data?: any;
 }
 
-// ----------------  UzivatelskyText (plne nezkontrolovano) ----------------
+// ----------------  UzivatelskyText ----------------
 
 interface UzivatelskyText {
-  galerie?: Galerie; // Define this more specifically if you know the structure
-  novaTabulka?: NovaTabulka; // TODO: zkontrolovat jestli sedi
-  layout?: "horizontalni" | "velka-galerie"; // Velka galerie if gallery, horizintalni for otazky
+  galerie?: Galerie;
+  /** Submodul nová tabulka. Do submodulu se pouze bere vlastnost 'tabulky' */
+  novaTabulka?: NovaTabulka;
+  /**
+   * @param "velka-galerie" - pokud je definovaná Galerie
+   *  @param "horizontalni" | "vertikalni" - pokud není definovaná Galerie, určuje layout otázek
+   */
+  layout?: "horizontalni" | "velka-galerie" | "vertikalni";
+  /** Seznam otázek. */
   otazky: Otazka[];
 }
 
 interface Otazka {
+  /** Unikátní identifikátor napříč cvičením.
+   * @example 'otazka-1'
+   */
   id: string;
-  zadani?: Zadani | string; // CoSeDozvimeZPropagistickychLetaku
-  instrukce?: string; //"Myslím si, že…"
+  /** Zadání otázky.
+   * Pokud je textové zadání typu string, dosadí se pouze text.
+   * Příklad: proc-byli-uneseni
+   * Pokud je textové zadání typu ZadaniZVyberu je jako zadání vybráno jako výsledek výběru z předchozího definovaného modulu Výběr.
+   * Příklad: co-se-dozvime-z-propagandistickych-plakatu
+   */
+  zadani?: ZadaniZVyberu | string;
+  /** Instrukce uvnitř textového pole
+   * @example  "Myslím si, že…"
+   */
+  instrukce?: string;
+  /** Minimální délka. (počet znaků)
+   * @default 2
+   */
   minDelka?: number;
+  /** Maximální délka. (počet znaků)
+   * @default 1000
+   */
   maxDelka?: number;
+  /** Výška textového pole, jinak řečeno počet řádků.
+   * @default 7
+   */
   vyska?: number;
-  duplikovat?: string[]; // id of duplicated uzivatelskyText, eg. ["otazka-2"]
+  /** Duplikace odpovědi z předchozí otázky. Výčet id otázek.
+   * @example "otazka-2"
+   */
+  duplikovat?: string[];
+  /** Textový řetězec, který je předvyplněný v textovém poli. */
   hodnota?: string;
 }
 
-interface Zadani {
-  from: string; // zadani from other modul, eg. "vyber-1"
-  placeholder: string; // "Zadání se zobrazí až po výběru položky na předchozím slajdu."
+/** Získání odpovědi z modulu výběru.
+ * Příklad: co-se-dozvime-z-propagandistickych-plakatu
+ */
+interface ZadaniZVyberu {
+  /** ID modulu výberu, ze kterého se má vzít odpověď.
+   * @example "vyber-1"
+   */
+  from: string;
+  /** Text, který se má zobrazit, pokud si uživatel ještě nevybral v modulu výběru.
+   * @example "Zadání se zobrazí až po výběru položky na předchozím slajdu."
+   */
+  placeholder: string;
 }
 
 // ----------------  Vyber (plne nezkontrolovano) ----------------
