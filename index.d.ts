@@ -276,14 +276,14 @@ interface ImitaceMapyVrstva {
  */
 interface KlicovaSlova {
   /** Rozšíření o doplňkovou galerii */
-  galerie?: Galerie[]; //TODO: Dodělat galerii
+  galerie?: Galerie[];
   /** Nastavení, jestli má být galerie velká ("velka-galerie"), či malá (nedefinováno) */
   layout?: "velka-galerie";
   /** Rozšíření o novou tabulku,
    *
    * @example komu-psal-fucik
    */
-  novaTabulka?: NovaTabulka; // TODO: Zkontrolovat novou tabulku
+  novaTabulka?: NovaTabulka;
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
   klicovaSlova: KlicovaSlovaSkupina[];
 }
@@ -395,16 +395,11 @@ interface Audio {
   /** Popisek k audio přehrávači */
   popisek?: string;
   /**
-   * Označuje, zda je k dispozici přepis
-   * @example jak-obhajit-pisen
-   */
-  prepis?: boolean;
-  /**
-   * Obsah přepisu. Relativní cesta k souboru s textem (ve složce text)
+   * Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}
    * @example "text-00"
    * @example jak-obhajit-pisen
    */
-  content?: string;
+  prepis?: boolean;
 }
 
 /** Video médium pro modul média */
@@ -649,11 +644,6 @@ interface RazeniPolozkaText extends RazeniPolozkaBase {
 interface RazeniPolozkaAudio extends RazeniPolozkaBase {
   medium: "audio";
   objekt: Audio;
-  /** Název pro audio přehrávač
-   *
-   * Příklad: proc-byli-uneseni
-   */
-  nazev?: string;
 }
 interface RazeniPolozkaVideo extends RazeniPolozkaBase {
   medium: "video";
@@ -662,7 +652,7 @@ interface RazeniPolozkaVideo extends RazeniPolozkaBase {
 /** Nikde nepoužito, nejspíše nefunguje */
 interface RazeniPolozkaUzivatelskyText extends RazeniPolozkaBase {
   medium: "uzivatelsky text";
-  objekt: Otazka;
+  objekt: Otazka[];
 }
 interface RazeniPolozkaSVG extends RazeniPolozkaBase {
   medium: "svg";
