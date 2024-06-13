@@ -1126,26 +1126,52 @@ interface VyberImage extends VyberPolozkaBase {
 
 type Galerie = GaleriePolozka[];
 
-interface GaleriePolozka {
-  /** Určuje, jestli je položka nějaký specifický typ (modul) ze cvičení. */
-  typ?: "svg" | "text" | "vyber";
-  /** Popisek pro položku. Nachází se uvnitř položky */
-  popisek?: string;
-  /** Objekt pro vybraný typ.
-   * Pro 'svg' - SvgPolozka
-   * Pro 'text' - text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, ze kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
-   */
-  objekt?: SvgPolozka | string;
+/**Typ, který reprezentuje jakoukoliv položku v galerii */
+type GaleriePolozka = SvgPolozka | TextPolozka | VyberPolozka | MultimedialniPolozka;
 
-  /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
+interface SvgPolozka {
+  typ: "svg";
+  objekt: SvgPolozka;
+    /** Popisek pro položku. Nachází se uvnitř položky */
+    popisek?: string;
+}
+
+/** Uzivatelsky Text nebo text */
+interface TextPolozka {
+  typ: "text";
+  /** Text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, ze kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
+   */
+  objekt: string;
+    /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
    * Příklad: co-se-stalo-v-zime-1970 */
   duplikovat?: string[];
-  /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
+  /** Popisek pro položku. Nachází se uvnitř položky */
+  popisek?: string;
+}
+
+interface VyberPolozka {
+  typ: "vyber";
+    /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
    * co-se-dozvime-z-propagandistickych-plakatu
    */
-  vyberId?: string;
-  /** Pokud není definovaný typ, jedná se o Obrázek, Video nebo Audio */
-  soubor?: ObrazekSoubor | Video | Audio;
-  /** Pouze pro soubor obrázek ["jpg", "jpeg", "png", "gif"], který je v gallerii. Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
+  vyberId: string;
+  /** Popisek pro položku. Nachází se uvnitř položky */
+  popisek?: string;
+}
+
+type MultimedialniPolozka = ImageGallery | VideoGallery | AudioGallery;
+
+interface VideoGallery extends Video {
+  popisek?: string;
+}
+
+interface AudioGallery extends Audio {
+  popisek?: string;
+}
+
+interface ImageGallery {
+  soubor: ObrazekSoubor;
+   /** Pouze pro soubor obrázek ["jpg", "jpeg", "png", "gif"], který je v gallerii. Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
   zvetseny?: ObrazekSoubor;
+  popisek?: string;
 }
