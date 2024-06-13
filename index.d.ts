@@ -1104,7 +1104,7 @@ interface VyberText extends VyberPolozkaBase {
 }
 interface VyberUzivatelskyText extends VyberPolozkaBase {
   medium: "uzivatelsky text";
-  objekt: Otazka;
+  objekt: Otazka[];
 }
 
 interface VyberAudio extends VyberPolozkaBase {
