@@ -1171,7 +1171,7 @@ interface AudioGallery extends Audio {
 
 interface ImageGallery {
   soubor: ObrazekSoubor;
-   /** Pouze pro soubor obrázek ["jpg", "jpeg", "png", "gif"], který je v gallerii. Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
+   /** Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
   zvetseny?: ObrazekSoubor;
   popisek?: string;
 }
