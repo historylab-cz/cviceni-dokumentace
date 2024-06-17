@@ -1127,13 +1127,17 @@ interface VyberImage extends VyberPolozkaBase {
 type Galerie = GaleriePolozka[];
 
 /**Typ, který reprezentuje jakoukoliv položku v galerii */
-type GaleriePolozka = SvgPolozka | TextPolozka | VyberPolozka | MultimedialniPolozka;
+type GaleriePolozka =
+  | SvgPolozka
+  | TextPolozka
+  | VyberPolozka
+  | MultimedialniPolozka;
 
 interface SvgPolozka {
   typ: "svg";
   objekt: SvgPolozka;
-    /** Popisek pro položku. Nachází se uvnitř položky */
-    popisek?: string;
+  /** Popisek pro položku. Nachází se uvnitř položky */
+  popisek?: string;
 }
 
 /** Uzivatelsky Text nebo text */
@@ -1142,7 +1146,7 @@ interface TextPolozka {
   /** Text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, ze kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
    */
   objekt: string;
-    /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
+  /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
    * Příklad: co-se-stalo-v-zime-1970 */
   duplikovat?: string[];
   /** Popisek pro položku. Nachází se uvnitř položky */
@@ -1151,7 +1155,7 @@ interface TextPolozka {
 
 interface VyberPolozka {
   typ: "vyber";
-    /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
+  /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
    * co-se-dozvime-z-propagandistickych-plakatu
    */
   vyberId: string;
@@ -1171,7 +1175,7 @@ interface AudioGallery extends Audio {
 
 interface ImageGallery {
   soubor: ObrazekSoubor;
-   /** Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
+  /** Zobrazení jiného obrázku, pokud se obrázek zvětší na celou obrazovku. */
   zvetseny?: ObrazekSoubor;
   popisek?: string;
 }
