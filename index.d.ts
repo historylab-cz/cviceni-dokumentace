@@ -9,20 +9,20 @@ interface Cviceni {
 }
 
 interface CviceniMetadata {
-  /** Existují dva typy verzí. */
+  /** Existují dva typy verzí. Jejich kombinace zajišťuje unikátnost. */
   version: {
     /** Sémantická verze aplikace. Generovaná automaticky pomocí `npm release`. Je verzí aplikace jako takové. Tzn. všechny cvičení sdílí tuto hodnotu. */
     global: string;
     /** Inkrementalní verze obsahu (revize). Nezávisí na verzi aplikace. Jakákoliv úprava obsahu by se měla projevit na navýšení verze. Každé cvičení si udržuje tuto verzi samostatně. */
     content: number;
   };
-  /** Vyuziva se k automatizovanemu deploymentu, na jaky server cviceni deployovat */
+  /** Využívá se k automatizovanému deploymentu, na jaký server cvičení deployovat */
   katalog: Katalog[];
   /** Definice jazyka, ve kterém je cvičení připraveno zapsaná ve formátu ISO 639-1 */
   language: Language;
-  /** Nazev cviceni. Nemusí být unikátní. */
+  /** Název cvičení. Nemusí být unikátní. */
   nazev: string;
-  /** Slug se muze lisit od `nazev`, ale ocekava se, ze je to jen automaticky generovany slugified verze nazvu. Musí být unikátní.
+  /** Slug se může lišit od `nazev`, ale očekává se, že je to jen automaticky generovaný slugified verze názvu. Musí být unikátní.
    * @example "co-se-lidem-v-praveku-delo-se-zuby"
    */
   slug: string;
@@ -34,7 +34,7 @@ interface CviceniMetadata {
   anotace: {
     /** Zobrazuje se v katalogu */
     ucitel: string;
-    /** Zobrazuje se ve cviceni */
+    /** Zobrazuje se ve cvičení */
     verejna: string;
   };
   /** Předpokládaná doba práce v minutách. */
@@ -53,84 +53,18 @@ interface CviceniMetadata {
    * @example "co-se-lidem-v-praveku-delo-se-zuby/pic-02-1280w.jpg"
    */
   uvodniObrazek: ObrazekSoubor;
-  /** Unikatni identifikator cviceni. */
+  /** Unikatni identifikator cvičení. */
   id: number;
-  color: Color;
+  color: CviceniColor;
   mobileData: MobileData;
 }
 
-/** Každé cvičení spadá do některých předefinovaných didaktických kategorií. Nyní importované z velké tabulky. */
+/** Každé cvičení spadá do některých předefinovaných didaktických kategorií z jedneé tzv. velké čtyřky. Nyní importované z velké tabulky. */
 interface KlicovaSlovaMetadata {
-  rvp: RVP[];
-  koncept: Koncept[];
-  b4: B4[];
-  historylab: Historylab[];
-}
-
-enum RVP {
-  ČeskéZeměVeTřechStoletích = "české země ve třech stoletích",
-  ČeskéZeměVe20Století = "české země ve 20. století",
-  Československo2Pol20Století = "Československo 2. pol. 20. století",
-  PrvníSvětováVálka = "první světová válka",
-  DůsledkyPrvníSvětovéVálky = "důsledky první světové války",
-  VznikČSR = "vznik ČSR",
-  PolitickýVývojČSR = "politický vývoj ČSR",
-  HospodářskýVývojČSR = "hospodářský vývoj ČSR",
-  SociálníProblémyČSR = "sociální problémy ČSR",
-  NárodnostníProblémyČSR = "národnostní problémy ČSR",
-  HospodářskáKrize = "hospodářská krize",
-  DruháSvětováVálka = "druhá světová válka",
-  DůsledkyDruhéSvětovéVálky = "důsledky druhé světové války",
-  Antisemitismus = "antisemitismus",
-  Rasismus = "rasismus",
-  TotalitníRežimy = "totalitní režimy",
-  Československo50Léta = "Československo 50. léta",
-  Československo60Léta = "Československo 60. léta",
-  Československo70Léta = "Československo 70. léta",
-  Československo80Léta = "Československo 80. léta",
-  VznikČeskéRepubliky = "vznik České republiky",
-  PříčinyStudenéVálky = "příčiny studené války",
-  StřetáváníZápadníhoAVýchodníhoBloku = "střetávání západního a východního bloku",
-  DůsledkyStudenéVálky = "důsledky studené války",
-  Kolonialismus = "kolonialismus",
-  Dekolonizace = "dekolonizace",
-  ProblémySoučasnéhoSvěta = "problémy současného světa",
-  EuroatlantickáSpolupráce = "euroatlantická spolupráce",
-  Technika = "technika",
-  Vzdělání = "vzdělání",
-  Sport = "sport",
-  Zábava = "zábava",
-}
-
-enum Koncept {
-  ČlověkAŽivotníProstředí = "člověk a životní prostředí",
-  DějinyVeVeřejnémProstoru = "dějiny ve veřejném prostoru",
-  Gender = "gender",
-  Každodennost = "každodennost",
-  Migrace = "migrace",
-  ObčanskáSpolečnost = "občanská společnost",
-  Propaganda = "propaganda",
-  Symboly = "symboly",
-  Umění = "umění",
-  VzpomínkováKultura = "vzpomínková kultura",
-}
-
-enum B4 {
-  DobovéPerspektivy = "dobové perspektivy",
-  PříčinyADůsledky = "příčiny a důsledky",
-  TrváníAZměna = "trvání a změna",
-  VztahKMinulosti = "vztah k minulosti",
-}
-
-enum Historylab {
-  Tvoříme = "tvoříme",
-  Diskutujeme = "diskutujeme",
-  SestavujemePodloženouOdpověď = "sestavujeme podloženou odpověď",
-  PorovnávámePrameny = "porovnáváme prameny",
-  HledámeKlíčovéDetaily = "hledáme klíčové detaily",
-  FormulujemeAOvěřujemeHypotézu = "formulujeme a ověřujeme hypotézu",
-  OdhalujemeSkrytýZáměrPramene = "odhalujeme skrytý záměr pramene",
-  DomýšlímeVýznamy = "domýšlíme významy",
+  rvp: string[];
+  koncept: string[];
+  b4: string[];
+  historylab: string[];
 }
 
 /** Časové údaje cvičení. Slouží zejména k umístění na časové ose. Nyní importované z velké tabulky. */
@@ -146,7 +80,7 @@ interface CasovaOsa {
 }
 
 /** Barevná informace o cvičení. Automaticky generované z `uvodniObrazek`. Nyní slouží k určení pozice karty cvičení v katalogu na stránce "Galerie". */
-interface Color {
+interface CviceniColor {
   rgb: {
     r: number;
     g: number;
@@ -181,7 +115,7 @@ interface CviceniSlajd {
   testKviz?: TestKviz;
   textovyEditor?: TextovyEditor;
   uzivatelskyText?: UzivatelskyText;
-  videoStamps: VideoStamps;
+  videoStamps?: VideoStamps;
   vyber?: Vyber;
 }
 
@@ -224,6 +158,7 @@ enum MobileFriendly {
 enum Funkce {
   Audio = "audio",
   Cteni = "cteni",
+  Komiks = "komiks",
   Kresleni = "kresleni",
   Lupa = "lupa",
   Pretahovani = "pretahovani",
@@ -233,6 +168,19 @@ enum Funkce {
   TextEditor = "text-editor",
   Video = "video",
   Znacky = "znacky",
+}
+
+enum Layout {
+  Horizontal = "horizontalni",
+  Vertical = "vertikalni",
+  Gallery = "galerie",
+  BigGallery = "velka-galerie",
+}
+
+enum Color {
+  Red = "color-red",
+  Orange = "color-orange",
+  Green = "color-green",
 }
 
 // ========================= MODULY =========================
@@ -264,7 +212,7 @@ interface ImitaceMapyVrstva {
   /** Relativni cesta k obrazku  */
   mapa: ObrazekSoubor;
   /** Label tlačítka, které přepne danou vrstvu */
-  nazev: string; // name of the map to the button
+  nazev: string;
 }
 
 // ---------------- KlicovaSlova ----------------
@@ -278,10 +226,10 @@ interface KlicovaSlova {
   /** Rozšíření o doplňkovou galerii */
   galerie?: Galerie[];
   /** Nastavení, jestli má být galerie velká ("velka-galerie"), či malá (nedefinováno) */
-  layout?: "velka-galerie";
+  layout?: Layout.BigGallery;
   /** Rozšíření o novou tabulku,
    *
-   * @example komu-psal-fucik
+   * @example Cvičení `komu-psal-fucik`
    */
   novaTabulka?: NovaTabulka;
   /** Jedno nebo více položek klíčových slov, zarovnané vodorovně */
@@ -308,7 +256,7 @@ interface KlicovaSlovaSkupina {
   /**
    * Duplikuj (získej) klíčová slova včetně jejich interakce z předchozích klíčových slov.
    *
-   * @example poselstvi-pravekeho-hrobu
+   * @example Cvičení `poselstvi-pravekeho-hrobu`
    */
   inherit?: KlicovaSlovaInherit;
 }
@@ -327,7 +275,7 @@ interface KlicovaSlovaInherit {
    */
   onInit: boolean;
   /**
-   * ID klíčových slov
+   * `id` jiného modulu Klíčových slov
    *
    * @example 'klicova-slova-1'
    *
@@ -341,7 +289,7 @@ interface KlicovaSlovaInherit {
  *
  * Zobrazení obrázků, audio přehrávek a videí
  *
- * @example co-chtel-zmenit-knize-bretislav, co-se-stalo-v-zime-1970
+ * @example Cvičení `co-chtel-zmenit-knize-bretislav`, `co-se-stalo-v-zime-1970`
  *
  */
 interface Media {
@@ -349,15 +297,12 @@ interface Media {
   nastaveni: {
     /** Nastavení rozložení médií:
      *
-     * @para 'vertikalni' nebo  'galerie' nebo 'velka-galerie' - položky jsou seřazeny vertikálně @example co-se-stalo-v-zime-1970
-     * @para 'horizontalni' - položky jsou seřazeny horizontálně, @example co-chtel-zmenit-knize-bretislav
+     * @para 'vertikalni' nebo  'galerie' nebo 'velka-galerie' - položky jsou seřazeny vertikálně
+     * @example Cvičení `co-se-stalo-v-zime-1970`
+     * @para 'horizontalni' - položky jsou seřazeny horizontálně
+     * @example Cvičení `co-chtel-zmenit-knize-bretislav`
      */
-    layout:
-      | "vertikalni"
-      | "galerie"
-      | "velka-galerie"
-      | "horizontalni"
-      | string;
+    layout: Layout;
   };
   /** Jednotlivé položky galerie */
   soubory: MediaPolozka[];
@@ -379,8 +324,9 @@ interface Audio {
   /** Typ audio přehrávače.
    *
    * Nedefinovaný = normální přehrávač
-   *
-   * @param 'jendoduchý' - jednoduchý přehrávač, bez doprovodných prvků @example to-byla-slava
+   * @default ""
+   * @param 'jendoduchy' - jednoduchý přehrávač, bez doprovodných prvků
+   * @example Cvičení `to-byla-slava`
    *
    */
   vzhled?: "jednoduchy";
@@ -395,9 +341,9 @@ interface Audio {
   /** Popisek k audio přehrávači */
   popisek?: string;
   /**
-   * Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}
+   * Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce `text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}`
    * @example "text-00"
-   * @example jak-obhajit-pisen
+   * @example Cvičení `jak-obhajit-pisen`
    */
   prepis?: boolean;
 }
@@ -412,21 +358,21 @@ interface Video {
    */
   muted?: boolean;
   /**
-   * Relativni cesta k obrázku plakátu u videa.
+   * Relativni cesta k obrázku pro uvodi plakát u videa.
    */
   poster?: ObrazekSoubor;
   /**
    * Titulky k videu.
    */
   titulky?: VideoTitulky;
-  /**  Label pro video přehrávač  */
+  /**  Label pro video  */
   label?: string;
-  /** Název video přehrávače */
+  /** Název videa */
   nazev?: string;
-  /** Popisek k audio přehrávači */
+  /** Popisek k videu */
   popisek?: string;
 }
-/** Titulky k video přehrávači */
+/** Titulky k videu */
 interface VideoTitulky {
   /** Typ titulků. */
   typ?: string;
@@ -449,7 +395,7 @@ interface NovaTabulka {
   /**
    * Pokud nezadáno, jedná se o malou galerii.
    */
-  layout?: "velka-galerie";
+  layout?: Layout.BigGallery;
   /** Rozšíření o modul přetahování */
   pretahovani?: Pretahovani;
   /** Seznam tabulek */
@@ -529,15 +475,15 @@ interface TabulkaSloupec {
 /**
  * Modul pro přidávání razítek do videa.
  *
- * Příklad: o-cem-se-hadaji-v-rodine
+ * @example Cvičení `o-cem-se-hadaji-v-rodine`
  */
 interface VideoStamps {
-  video: VideoStampData;
-  nastaveni: NastaveniVideoStamp;
+  video: VideoStampsData;
+  nastaveni: VideoStampsNastaveni;
 }
 
-/** Hlavním prvkem je typ Video, který je rozšířen o id a jednolitvé razítka */
-interface VideoStampData extends Video {
+/** Hlavním prvkem je typ [[Video]], který je rozšířen o `id` a jednolitvá razítka */
+interface VideoStampsData extends Video {
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'videostamp-1'
@@ -548,8 +494,8 @@ interface VideoStampData extends Video {
 }
 
 /** Nastavení layoutu videa */
-interface NastaveniVideoStamp {
-  layout: "vertikalni" | "galerie" | "velka-galerie" | "horizontalni";
+interface VideoStampsNastaveni {
+  layout: Layout;
 }
 
 interface Stamp {
@@ -568,15 +514,14 @@ interface Stamp {
 }
 
 // ----------------  Popisky ----------------
-/** Textové popisky. Řadí se horizontálně. */
+/** Jednoduchý modil pro zobrazení textových popisků. Řadí se horizontálně. Používané zejména v pod [[Prameny]] */
 type Popisky = string[];
 
 // ----------------  Prameny ----------------
-/** Jednoduchý modul pro zobrazení oibrázků. Řadí se horizontálně. */
+/** Jednoduchý modul pro zobrazení obrázků. Řadí se horizontálně. */
 type Prameny = ObrazekSoubor[];
 
 // ----------------  Razeni ----------------
-
 interface Razeni {
   /** Unikátní číslo napříč video stamp
    *
@@ -586,12 +531,13 @@ interface Razeni {
   /**
    * Layout řazení, horizontální nebo vertikální.
    */
-  typ: "horizontalni" | "vertikalni";
-  /** Definuje zpětnou vazbu pro řazení. */
+  typ: Layout.Horizontal;
+  /** Definuje zpětnou vazbu pro řazení zobrazovanou dynamicky na základě akcí uživatele */
   zpetnaVazba?: RazeniZpetnaVazba[];
   /** Seznam položek pro řazení */
   objekty: RazeniPolozka[];
 }
+
 // TODO: generalizovat
 interface RazeniZpetnaVazba {
   /**
@@ -605,8 +551,8 @@ interface RazeniZpetnaVazba {
    * @example "Jednu fotografii bychom uspořádali odlišně."
    */
   text: string;
-  /** Brava tlačítka zpětné vazby */
-  barva: "color-red" | "color-orange" | "color-green";
+  /** Barva tlačítka zpětné vazby */
+  barva: Color;
 }
 
 type RazeniPolozka =
@@ -649,11 +595,6 @@ interface RazeniPolozkaVideo extends RazeniPolozkaBase {
   medium: "video";
   objekt: Video;
 }
-/** Nikde nepoužito, nejspíše nefunguje */
-interface RazeniPolozkaUzivatelskyText extends RazeniPolozkaBase {
-  medium: "uzivatelsky text";
-  objekt: Otazka[];
-}
 interface RazeniPolozkaSVG extends RazeniPolozkaBase {
   medium: "svg";
   objekt: SvgPolozka;
@@ -667,14 +608,14 @@ interface RazeniPolozkaObrazek extends RazeniPolozkaBase {
 
 interface Svg {
   /**
-  The list of SVG files.
+  Seznam obrázků. Určuje počet SVG editorů.
   */
   soubory: SvgPolozka[];
   /** Svg podpurný modul s přetahováním položek do obrázku. */
   pretahovani?: Pretahovani;
   /** Galerie s SVG */
   galerie?: Galerie;
-  /** Nastavení layoutu. */
+  /** Nastavení SVG. */
   nastaveni?: SvgNastaveni;
 }
 
@@ -689,7 +630,7 @@ interface SvgNastaveni {
   /**
    * Podpůrný modul, zatím použitý v jednom cvičení a pro řazení.
    *
-   * @example promeny-mesta-zlina
+   * @example Cvičení `promeny-mesta-zlina`
    */
   poradi?: ISvgPoradi;
 }
@@ -707,54 +648,44 @@ interface ISvgPoradi {
 }
 
 interface SvgPolozka {
-  soubor: ObrazekSoubor;
-  /** Seznam funkcí pro svg modul
-   * @param 'text' - textové pole
-   * @param 'kresleni' - kreslení do svg
-   * @param 'znacky' - tečky (značky do svg)
-   * @param 'komiks' - předpřipravené bubliny v svg, do kterých uživatel píše
-   * Prázdné pole pro žádnou funkci (viz. proc-se-rozpadlo-ceskoslovensko)
-   */
-  funkce?: string[];
-  /** Seznam barev, které jsou nabídnuty z nabídky
-   * @example 'blue', 'red'
-   */
-  barvy?: string[];
-  /** Duplikovat data z předchozího svg. Seznam ID svg, ze kterých chcceme data získat.
-   * @example 'svg-1', 'svg-2'
-   * Příkald: co-chteli-cerni-panteri
-   */
-  duplikovat?: string[];
-  /** Indikace pokud se na svg dá přetáhnout položka z Pretahovani
-   * @param true - ano dá,
-   * @param false - ne nedá
-   */
-  drop?: boolean;
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'svg-1'
    */
   id: string;
+  soubor: ObrazekSoubor;
+  /** Jaké funkce má SVG modul mít zapnuté
+   * Prázdné pole pro žádnou funkci (viz. cvičení `proc-se-rozpadlo-ceskoslovensko`)
+   */
+  funkce?: Funkce[];
+  /** Seznam barev, které jsou nabídnuty z nabídky
+   * @example 'blue', 'red'
+   */
+  barvy?: string[];
+  /** Duplikovat data z předchozího SVG. Seznam `id` SVG, ze kterých chceme data získat.
+   * @example 'svg-1', 'svg-2'
+   * Příkald: Cvičení `co-chteli-cerni-panteri`
+   */
+  duplikovat?: string[];
+  /** Indikace pokud se na SVG dá přetáhnout položka z [[Pretahovani]]
+   * @param true - ano dá,
+   * @param false - ne nedá
+   */
+  drop?: boolean;
   /** Popisek pro SVG
    */
   popisek?: string; //ANO
-  /** Pokud je v seznamu funkcí položka 'komiks', zde jsou data pro tuto funkci. */
+  /** Pokud je v seznamu funkcí položka 'komiks', zde jsou data pro tuto funkci. Předdefiované bubliny s textem. */
   komiks?: SvgKomiks[];
-  /**
-   * Pouze prohlizeni?
-   * Pokud false: ano, pouze prohlizeni
-   * @default true
-   */
-  interactive?: boolean;
 }
 
 type SvgKomiks = SvgKomiksText | SvgKomiksZnacka;
 
 interface SvgKomiksText {
-  /** Pro textový komiks je nutno zadat 'text', funguje stejně jako u svg funkcí */
+  /** Pro textový komiks je nutno zadat 'text', funguje stejně jako u SVG funkcí */
   kategorie: "text";
   /**  Text, který se zobrazí jak label, tak placeholder pro textové pole.
-   * Pokud není zadán label a placeholder se určí ze subkategorie
+   * Pokud není zadán label a placeholder se určí že subkategorie
    * Zatím nikde není použitý
    */
   placeholder?: string;
@@ -766,12 +697,12 @@ interface SvgKomiksText {
   subkategorie: "promluva" | "myslenka" | "vypravec"; //only if placeholder is selected
   /** Určuje tvar textové bubliny. Resp. určuje roh, kde má být šipka.
    * @example ['left', 'top'] nebo ['right', 'bottom']
-   * Příklad: proc-byli-vysidleni
+   * Příklad: Cvičení `proc-byli-vysidleni`
    */
   subjekt: ["left" | "right", "top" | "bottom"];
   /** Pozice levého horního rohu textového pole v svg. X,Y souřadnice
    * @example 140, 360
-   * Příklad: proc-byli-vysidleni
+   * Příklad: Cvičení `proc-byli-vysidleni`
    */
   pozice: [number, number];
   /** Label pro textové pole, pokud chybí nahradí se placeholder nebo subkategorie */
@@ -779,7 +710,7 @@ interface SvgKomiksText {
 }
 
 interface SvgKomiksZnacka {
-  /** Pro komiks jako značka je nutno zadat 'znacka', funguje stejně jako u svg funkcí */
+  /** Pro komiks jako značka je nutno zadat 'znacka', funguje stejně jako u SVG funkcí */
   kategorie: "znacka";
 
   /** Pozice levého horního rohu značky v svg. X,Y souřadnice.
@@ -816,7 +747,9 @@ interface Pretahovani {
    * @example 'pretahovani-1'
    */
   id: string;
-  /** Ještě nepoužito. TODO. */
+  /** Ke kontrole jaké objekty mohou přijít na vstupu.
+   * @example Cvičení `proc-resit-zidovskou-otazku`
+   */
   tagName: string;
 }
 interface PretahovaniPolozka {
@@ -859,12 +792,15 @@ interface TestKviz {
   id: string;
   galerie?: Galerie;
   nastaveni?: TestKvizNastaveni;
-  zpetnaVazba?: TestKvizZpetnaVazba[]; // Optional array of feedback objects - procjeVelkaBritaniezemicaje
-  zadani: KvizOtazka[]; // Array of questions
+  /** Optional array of feedback objects
+   * @example Cvičení `proc-je-velka-britanie-zemi-caje`
+   */
+  zpetnaVazba?: TestKvizZpetnaVazba[];
+  zadani: KvizOtazka[];
 }
 /** Nastavení layoutu pro TestKviz */
 interface TestKvizNastaveni {
-  layout?: "velka-galerie";
+  layout?: Layout.BigGallery;
 }
 
 // TODO: generalizovat
@@ -881,13 +817,13 @@ interface TestKvizZpetnaVazba {
    */
   text: string;
   /** Brava tlačítka zpětné vazby */
-  barva: "color-red" | "color-orange" | "color-green";
+  barva: Color;
 }
 
 interface KvizOtazka {
   /** Textová otázka.
    * @example 'Ženy se neúčastnily hostiny – byly společensky méně významné než muži.'
-   * Příklad: jak-zobrazili-sumerskou-spolecnost
+   * @example: Cvičení `jak-zobrazili-sumerskou-spolecnost`
    */
   otazka: string;
   /** Výčet odpovědí pro otázku. */
@@ -901,7 +837,7 @@ interface KvizOtazka {
 interface KvizOdpoved {
   /** Text odpovědi. */
   text: string;
-  /** Má tato odpověď být vybrána jako defaultní? */
+  /** Je tato odpověď předvybrána? */
   selected?: boolean;
 }
 
@@ -915,7 +851,7 @@ interface TextovyEditor {
 }
 /** Nastavení layoutu pro TextovyEditor */
 interface TextovyEditorNastaveni {
-  layout?: "velka-galerie";
+  layout?: Layout.BigGallery;
 }
 
 interface Text {
@@ -925,11 +861,11 @@ interface Text {
    * @example 1 - prefix je doplněn automaticky
    */
   id: string | number;
-  /** Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}
+  /** Odkaz na html soubor, ve kterém je text uložený. Umístění ve složce `text/{slug-cviceni-doplneny-automaticky}/{nazev-souboru-BEZ-pripony}`
    * @example "text-00"
    */
   text: string;
-  /** Děfinice funkce, kterou editor má plnit.
+  /** Definice funkce, kterou editor má plnit.
    * @param cteni - pouhé čtení, nic se nedá editovat
    * @param predznaceny - v editoru jsou předznačené části, které se dají označovat
    * @param zvyraznovani - editor umožňuje označit nějakou pasáž textu, zde se přidává kontext menu
@@ -937,16 +873,16 @@ interface Text {
   funkce: "cteni" | "predznaceny" | "zvyraznovani";
   /** TODO: Asi k ničemu?  */
   nazev?: string;
-  /** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
+  /** Pouze pro funkci `zvyraznovani`. Položky v menu při označení pasáže. */
   menu?: MenuPolozka[];
-  /** Pouze pro funkci predznaceny. */
+  /** Pouze pro funkci `predznaceny`. */
   predznaceni?: PredznaceniText[];
 }
 
 /** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
 interface MenuPolozka {
   /** Barva položky. */
-  color: string;
+  color: "red" | "blue" | "orange" | "gray" | "yellow" | "green" | "black";
   /** Unikátní identifikátor napříč textovým editorem.  */
   commandName: string;
   /** Název položky */
@@ -957,9 +893,8 @@ interface MenuPolozka {
 interface PredznaceniText {
   /** Výraz v textu, který má být předznačen. */
   vyraz: string;
-  /** Data předávající se do textového editoru.
-   * TODO: nevím  čemu to je.
-   * Příklad: k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77
+  /** Další data asociovaná s daným předznačeným textem. K dispozici pro jiné nástroje (eg. nová tabulka)
+   * @example: Cvičení `k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77`
    */
   data?: any;
 }
@@ -970,11 +905,7 @@ interface UzivatelskyText {
   galerie?: Galerie;
   /** Submodul nová tabulka. Do submodulu se pouze bere vlastnost 'tabulky' */
   novaTabulka?: NovaTabulka;
-  /**
-   * @param "velka-galerie" - pokud je definovaná Galerie
-   *  @param "horizontalni" | "vertikalni" - pokud není definovaná Galerie, určuje layout otázek
-   */
-  layout?: "horizontalni" | "velka-galerie" | "vertikalni";
+  layout?: Layout;
   /** Seznam otázek. */
   otazky: Otazka[];
 }
@@ -1019,7 +950,7 @@ interface Otazka {
  * Příklad: co-se-dozvime-z-propagandistickych-plakatu
  */
 interface ZadaniZVyberu {
-  /** ID modulu výberu, ze kterého se má vzít odpověď.
+  /** ID modulu výberu, že kterého se má vzít odpověď.
    * @example "vyber-1"
    */
   from: string;
@@ -1045,7 +976,7 @@ interface VyberNastaveni {
   /** Layout výběru.
    * @default 'horizontalni'
    */
-  layout?: "horizontalni";
+  layout?: Layout.Horizontal;
   /** Určuje jestli se dá vybrat více jak jedna odpověď.
    * @example true - více odpovědí
    */
@@ -1143,10 +1074,10 @@ interface SvgPolozka {
 /** Uzivatelsky Text nebo text */
 interface TextPolozka {
   typ: "text";
-  /** Text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, ze kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
+  /** Text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, že kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
    */
   objekt: string;
-  /** Seznam ID, ze kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
+  /** Seznam ID, že kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
    * Příklad: co-se-stalo-v-zime-1970 */
   duplikovat?: string[];
   /** Popisek pro položku. Nachází se uvnitř položky */
@@ -1155,7 +1086,7 @@ interface TextPolozka {
 
 interface VyberPolozka {
   typ: "vyber";
-  /** ID modulu výběru, ze kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
+  /** ID modulu výběru, že kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
    * co-se-dozvime-z-propagandistickych-plakatu
    */
   vyberId: string;
