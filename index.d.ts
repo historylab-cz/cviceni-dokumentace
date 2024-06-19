@@ -387,7 +387,7 @@ interface VideoTitulky {
 // ---------------- Nova Tabulka (Velmi složité na zkontrolování) ----------------
 /** Tabulka, nejdříve se definují řádky a poté sloupce.
  *
- * @example husitstvi-a-historici
+ * @example Cvičení `husitstvi-a-historici`
  */
 interface NovaTabulka {
   /** Rozšíření o doplňkovou galerii */
@@ -411,9 +411,9 @@ interface Tabulka {
   columns?: TabulkaSloupec[];
   /** Řádky tabulky */
   rows?: TabulkaRadek[];
-  /** Definice, odkud se mají získat data. Jedná se o ID jednotlivých modulů.
+  /** Definice, odkud se mají získat data. Jedná se o `id` jednotlivých modulů.
    *
-   * @example husitstvi-a-historici
+   * @example Cvičení `husitstvi-a-historici`
    */
   dataFrom?: string[];
 }
@@ -421,22 +421,34 @@ interface Tabulka {
 // TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
 interface TabulkaRadek {
   /** Unikátní identifikátor napříč tabulkou
-   * Příklad: k-cemu-jsou-nam-vyroci
+   * @example Cvičení `k-cemu-jsou-nam-vyroci`
    * @example 'obrazek'
    */
   id: string;
   /** Název řádku */
   name?: string;
-  /** Typ řádku. TODO */
+  /** Typ řádku. TODO: */
   type:
     | {
-        name: string; //"drop"
-        type: string; // "obrazek", "tag"
-        textId: string; //"textovy-editor-2"
+        /** Typ řádku */
+        name: "drop" | "dup-text" | "select";
+        /** Typ obsahu */
+        type: "obrazek" | "tag" | "text";
+        /** Zobrazit data z textoveho editoru referenci na jeho `id`
+         * @example `textovy-editor-2`
+         * @example Cvičení `k-cemu-jsou-nam-vyroci`
+         */
+        textId: string;
+        /** Cislo jako string
+         * @example "1"
+         * @example Cvičení `jak-zobrazovali-svet`
+         */
+        number?: string;
       }
     | "";
   /** Hodnoty pro řádek (ještě  nikde nepoužito) */
   values?: (string | number)[];
+  "bg-color"?: string;
 }
 
 // TODO: fakt je to mega složitý, zabralo by to hodně času to popsat do podrobnosti, potřeba reinženýring
@@ -449,23 +461,26 @@ interface TabulkaSloupec {
   /** Název sloupce */
   name?: string;
   /** Typ sloupce
-   * @example proc-resit-zidovskou-otazku
+   * @example Cvičení `proc-resit-zidovskou-otazku`
    */
   type?: {
-    name: string; //"drop" "select" "dup-text"
-    type: string; //"tag"
+    /** Typ sloupce */
+    name: "drop" | "dup-text" | "select" | "";
+    /** Typ obsahu */
+    type?: "obrazek" | "tag" | "text";
+    /** Pro data z přetahování */
     tagName?: string;
     /** Kolik možností se dá přetáhnbout do tohoto sloupce */
     number?: number;
-    /**
-     * Příklad: k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77
+    /** Položky pro typ `select`
+     * @example Cvičení `k-cemu-vyzyvaly-dva-tisice-slov-a-charta-77`
      */
     options?: string[];
     attributes?: Record<string, string>; // V kodu je, ale nikde jsem nenasel pouziti
-    /**
-     * @example jak-informovali-o-havarii
+    /** Pro data z textového editoru
+     * @example Cvičení `jak-informovali-o-havarii`
      */
-    textId: string; //"textovy-editor-2" ASI
+    textId?: string;
   };
   values?: (string | number)[];
 }
@@ -597,7 +612,7 @@ interface RazeniPolozkaVideo extends RazeniPolozkaBase {
 }
 interface RazeniPolozkaSVG extends RazeniPolozkaBase {
   medium: "svg";
-  objekt: SvgPolozka;
+  objekt: SvgObjekt;
 }
 interface RazeniPolozkaObrazek extends RazeniPolozkaBase {
   medium: "obrazek";
@@ -610,7 +625,7 @@ interface Svg {
   /**
   Seznam obrázků. Určuje počet SVG editorů.
   */
-  soubory: SvgPolozka[];
+  soubory: SvgObjekt[];
   /** Svg podpurný modul s přetahováním položek do obrázku. */
   pretahovani?: Pretahovani;
   /** Galerie s SVG */
@@ -632,9 +647,9 @@ interface SvgNastaveni {
    *
    * @example Cvičení `promeny-mesta-zlina`
    */
-  poradi?: ISvgPoradi;
+  poradi?: SvgPoradi;
 }
-interface ISvgPoradi {
+interface SvgPoradi {
   /**
    * Možnost seřadit svg položky obrázeně
    * @example true - obráceně
@@ -647,7 +662,7 @@ interface ISvgPoradi {
   duplikovat?: boolean;
 }
 
-interface SvgPolozka {
+interface SvgObjekt {
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'svg-1'
@@ -739,7 +754,7 @@ interface Pretahovani {
   /**
    * Skupina položek pro přetahování do svg nebo tabulky.
    */
-  items: PretahovaniPolozka[];
+  items: PretahovaniObjekt[];
   /** Název pro skupinu přetahování. */
   name: string;
   /** Unikátní identifikátor napříč cvičením
@@ -752,12 +767,12 @@ interface Pretahovani {
    */
   tagName: string;
 }
-interface PretahovaniPolozka {
+interface PretahovaniObjekt {
   objekt:
     | PretahovaniTag
     | Otazka
     | ObrazekSoubor
-    | SvgPolozka
+    | SvgObjekt
     | Audio
     | Video
     | PretahovaniText;
@@ -950,7 +965,7 @@ interface Otazka {
  * Příklad: co-se-dozvime-z-propagandistickych-plakatu
  */
 interface ZadaniZVyberu {
-  /** ID modulu výberu, že kterého se má vzít odpověď.
+  /** `id` modulu výberu, že kterého se má vzít odpověď.
    * @example "vyber-1"
    */
   from: string;
@@ -970,7 +985,7 @@ interface Vyber {
   nastaveni: VyberNastaveni;
   galerie?: Galerie;
   zpetnaVazba?: VyberZpetnaVazba[];
-  objekty: VyberPolozka[];
+  objekty: VyberObjekt[];
 }
 interface VyberNastaveni {
   /** Layout výběru.
@@ -981,14 +996,14 @@ interface VyberNastaveni {
    * @example true - více odpovědí
    */
   viceOdpovedi?: boolean;
-  /** Pouze pokud je víceOdpovedi nastaveno na 'true'.
+  /** Pouze pokud je `víceOdpovedi` nastaveno na `true.
    * @example true - všechny položky jsou defaultně vybrány (uživatel odebírá vybrání)
    */
   vybrano?: boolean;
   /** Určuje, jeslti se má zobrazit tlačítko se zpětnou vazbou, či ne.
    * @example true - tlačítko se zpětnou vazbou se nezobrazí.
    */
-  disableFeedback?: boolean; // feedback disabling state
+  disableFeedback?: boolean;
 }
 
 // TODO: generalizovat
@@ -1006,14 +1021,14 @@ interface VyberZpetnaVazba {
   podminka: number[];
 }
 
-type VyberPolozka =
+type VyberObjekt =
   | VyberText
   | VyberUzivatelskyText
   | VyberAudio
   | VyberVideo
   | VyberImage;
 
-interface VyberPolozkaBase {
+interface VyberObjektBase {
   /** Typ média */
   medium;
   /** Data pro médium */
@@ -1029,72 +1044,72 @@ interface VyberPolozkaBase {
   data?: string;
 }
 
-interface VyberText extends VyberPolozkaBase {
+interface VyberText extends VyberObjektBase {
   medium: "text";
   objekt: string;
 }
-interface VyberUzivatelskyText extends VyberPolozkaBase {
+interface VyberUzivatelskyText extends VyberObjektBase {
   medium: "uzivatelsky text";
   objekt: Otazka[];
 }
 
-interface VyberAudio extends VyberPolozkaBase {
+interface VyberAudio extends VyberObjektBase {
   medium: "audio";
   objekt: Audio;
 }
 
-interface VyberVideo extends VyberPolozkaBase {
+interface VyberVideo extends VyberObjektBase {
   medium: "video";
   objekt: Video;
 }
 
-interface VyberImage extends VyberPolozkaBase {
+interface VyberImage extends VyberObjektBase {
   medium: "image";
   objekt: ObrazekSoubor;
 }
 
 // ----------------  Galerie ----------------
 
-type Galerie = GaleriePolozka[];
+type Galerie = GalerieObjekt[];
 
 /**Typ, který reprezentuje jakoukoliv položku v galerii */
-type GaleriePolozka =
-  | SvgPolozka
-  | TextPolozka
-  | VyberPolozka
-  | MultimedialniPolozka;
+type GalerieObjekt =
+  | GalerieSvg
+  | GalerieText
+  | GalerieVyber
+  | GalerieMultimedialni;
 
-interface SvgPolozka {
+interface GalerieSvg {
   typ: "svg";
-  objekt: SvgPolozka;
+  objekt: SvgObjekt;
   /** Popisek pro položku. Nachází se uvnitř položky */
   popisek?: string;
 }
 
 /** Uzivatelsky Text nebo text */
-interface TextPolozka {
+interface GalerieText {
   typ: "text";
   /** Text, který se zobrazí v poli, pokud uživatel nic nevyplní v předchozích uživatelských textech, že kterých se berou data. Pokud není definovaný 'duplikovat' zobrazí se pouze text zde napsaný
    */
   objekt: string;
-  /** Seznam ID, že kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
+  /** Seznam `id`, že kterých chceme duplikovat uživatelský text. Funguje pouze pro typ 'text'
    * Příklad: co-se-stalo-v-zime-1970 */
   duplikovat?: string[];
   /** Popisek pro položku. Nachází se uvnitř položky */
   popisek?: string;
 }
 
-interface VyberPolozka {
+interface GalerieVyber {
   typ: "vyber";
-  /** ID modulu výběru, že kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
-   * co-se-dozvime-z-propagandistickych-plakatu
+  /** `id` modulu výběru, že kterého chceme dostat vybranou polžku. Funguje pouze pro typ 'vyber'
+   * @example Cvičení `co-se-dozvime-z-propagandistickych-plakatu`
    */
   vyberId: string;
   /** Popisek pro položku. Nachází se uvnitř položky */
   popisek?: string;
 }
 
-type MultimedialniPolozka = ImageGallery | VideoGallery | AudioGallery;
+type GalerieMultimedialni = ImageGallery | VideoGallery | AudioGallery;
 
 interface VideoGallery extends Video {
   popisek?: string;
