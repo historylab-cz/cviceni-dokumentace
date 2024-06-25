@@ -862,14 +862,14 @@ interface TextovyEditor {
   galerie?: Galerie;
   nastaveni?: TextovyEditorNastaveni;
   /** Seznam textů. Kždý text je samostatný editor. */
-  texty: Text[];
+  texty: TextovyEditorText[];
 }
 /** Nastavení layoutu pro TextovyEditor */
 interface TextovyEditorNastaveni {
   layout?: Layout.BigGallery;
 }
 
-interface Text {
+interface TextovyEditorText {
   /** Unikátní identifikátor napříč cvičením
    *
    * @example 'textovy-editor-1'
@@ -891,7 +891,7 @@ interface Text {
   /** Pouze pro funkci `zvyraznovani`. Položky v menu při označení pasáže. */
   menu?: MenuPolozka[];
   /** Pouze pro funkci `predznaceny`. */
-  predznaceni?: PredznaceniText[];
+  predznaceni?: TextovyEditorTextPredznaceni[];
 }
 
 /** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
@@ -905,7 +905,7 @@ interface MenuPolozka {
 }
 
 /** Pouze pro funkci predznaceny */
-interface PredznaceniText {
+interface TextovyEditorTextPredznaceni {
   /** Výraz v textu, který má být předznačen. */
   vyraz: string;
   /** Další data asociovaná s daným předznačeným textem. K dispozici pro jiné nástroje (eg. nová tabulka)
