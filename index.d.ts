@@ -626,7 +626,7 @@ interface Svg {
   Seznam obrázků. Určuje počet SVG editorů.
   */
   soubory: SvgObjekt[];
-  /** Svg podpurný modul s přetahováním položek do obrázku. */
+  /** Svg podpůrný modul s přetahováním položek do obrázku. */
   pretahovani?: Pretahovani;
   /** Galerie s SVG */
   galerie?: Galerie;
@@ -867,7 +867,7 @@ interface KvizOdpoved {
 interface TextovyEditor {
   galerie?: Galerie;
   nastaveni?: TextovyEditorNastaveni;
-  /** Seznam textů. Kždý text je samostatný editor. */
+  /** Seznam textů. Každý text je samostatný editor. */
   texty: TextovyEditorText[];
 }
 /** Nastavení layoutu pro TextovyEditor */
