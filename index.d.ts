@@ -767,7 +767,11 @@ interface Pretahovani {
    */
   tagName: string;
 }
+
 interface PretahovaniObjekt {
+  /** Obsah objektu k pretazeni.
+   * Plně funkční jen "tag"
+   */
   objekt:
     | PretahovaniTag
     | Otazka
@@ -776,7 +780,9 @@ interface PretahovaniObjekt {
     | Audio
     | Video
     | PretahovaniText;
-  /** Typ média. Odopovídá následně objektu.*/
+  /** Typ média. Říká, jaký typ hodnoty je v poli `objekt`.
+   * Plně funkční jen "tag"
+   */
   medium?:
     | "tag"
     | "uzivatelsky text"
