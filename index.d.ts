@@ -245,8 +245,8 @@ interface KlicovaSlovaSkupina {
   nadpis?: string;
   /**  Jednotlivé funkce pro manipulaci s klíčovými slovy
    *
-   * @param 'selekce-' - všechna slova jsou vybrána, uživatel odebírá
-   * @param 'selekce+' - slova nejsou vybrána, uživatel vybírá
+   * @param 'selekce-' - všechna slova jsou vybrána, uživatel slova primárně odebírá
+   * @param 'selekce+' - žádná slova nejsou vybrána, uživatel slova primarně vybírá
    * @param 'wordcloud' - +/- zvětšování, zmenšovaní slova
    *
    */
@@ -868,7 +868,7 @@ interface TextovyEditor {
   galerie?: Galerie;
   nastaveni?: TextovyEditorNastaveni;
   /** Seznam textů. Každý text je samostatný editor. */
-  texty: TextovyEditorText[];
+texty: TextovyEditorText[];es6 Qfgt GW
 }
 /** Nastavení layoutu pro TextovyEditor */
 interface TextovyEditorNastaveni {
