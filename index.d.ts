@@ -396,7 +396,7 @@ interface NovaTabulka {
    * Pokud nezadáno, jedná se o malou galerii.
    */
   layout?: Layout.BigGallery;
-  /** Rozšíření o modul přetahování */
+  /** Rozšíření o modul přetahování. */
   pretahovani?: Pretahovani;
   /** Seznam tabulek */
   tabulky: Tabulka[];
@@ -497,7 +497,7 @@ interface VideoStamps {
   nastaveni: VideoStampsNastaveni;
 }
 
-/** Hlavním prvkem je typ [[Video]], který je rozšířen o `id` a jednolitvá razítka */
+/** Hlavním prvkem je typ {@link Video}, který je rozšířen o `id` a jednolitvá razítka */
 interface VideoStampsData extends Video {
   /** Unikátní identifikátor napříč cvičením
    *
@@ -529,7 +529,7 @@ interface Stamp {
 }
 
 // ----------------  Popisky ----------------
-/** Jednoduchý modil pro zobrazení textových popisků. Řadí se horizontálně. Používané zejména v pod [[Prameny]] */
+/** Jednoduchý modil pro zobrazení textových popisků. Řadí se horizontálně. Používané zejména v pod {@link Prameny} */
 type Popisky = string[];
 
 // ----------------  Prameny ----------------
@@ -626,7 +626,7 @@ interface Svg {
   Seznam obrázků. Určuje počet SVG editorů.
   */
   soubory: SvgObjekt[];
-  /** Svg podpůrný modul s přetahováním položek do obrázku. */
+  /** Svg podpůrný modul s přetahováním položek do obrázku. Funguje jen {@link PretahovaniTag}. */
   pretahovani?: Pretahovani;
   /** Galerie s SVG */
   galerie?: Galerie;
@@ -682,7 +682,7 @@ interface SvgObjekt {
    * Příkald: Cvičení `co-chteli-cerni-panteri`
    */
   duplikovat?: string[];
-  /** Indikace pokud se na SVG dá přetáhnout položka z [[Pretahovani]]
+  /** Indikace pokud se na SVG dá přetáhnout položka z {@link Pretahovani}
    * @param true - ano dá,
    * @param false - ne nedá
    */
@@ -739,7 +739,7 @@ interface SvgKomiksZnacka {
   barva: string; // only for znacka
 }
 
-/** Modul přetahování, fungující pro modul SVG a NovaTabulka */
+/** Modul přetahování, fungující pro modul {@link Svg} a {@link NovaTabulka} */
 interface Pretahovani {
   /**
    * Nikde nepoužito. Nejspíše kopie předchozího modulu.
@@ -752,7 +752,7 @@ interface Pretahovani {
    */
   wasDropped: boolean;
   /**
-   * Skupina položek pro přetahování do svg nebo tabulky.
+   * Skupina položek pro přetahování do svg nebo tabulky. Přetahování do {@link Svg} funguje jen pro {@link PretahovaniTag} a pro přetahování do {@link NovaTabulka} toho funguje více.
    */
   items: PretahovaniObjekt[];
   /** Název pro skupinu přetahování. */
@@ -868,7 +868,7 @@ interface TextovyEditor {
   galerie?: Galerie;
   nastaveni?: TextovyEditorNastaveni;
   /** Seznam textů. Každý text je samostatný editor. */
-texty: TextovyEditorText[];es6 Qfgt GW
+texty: TextovyEditorText[];
 }
 /** Nastavení layoutu pro TextovyEditor */
 interface TextovyEditorNastaveni {
