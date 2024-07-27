@@ -245,8 +245,8 @@ interface KlicovaSlovaSkupina {
   nadpis?: string;
   /**  Jednotlivé funkce pro manipulaci s klíčovými slovy
    *
-   * @param 'selekce-' - všechna slova jsou vybrána, uživatel slova primárně odebírá
-   * @param 'selekce+' - žádná slova nejsou vybrána, uživatel slova primarně vybírá
+   * @param 'selekce-' - všechny položky jsou vybrána, uživatel slova primárně odebírá
+   * @param 'selekce+' - žádné položky nejsou vybrána, uživatel slova primarně vybírá
    * @param 'wordcloud' - +/- zvětšování, zmenšovaní slova
    *
    */
