@@ -898,6 +898,10 @@ interface TextovyEditorText {
   menu?: MenuPolozka[];
   /** Pouze pro funkci `predznaceny`. */
   predznaceni?: TextovyEditorTextPredznaceni[];
+  /** Zapne, ci vypne moznost automatickeho oznacovani celych slov. Pouze pro funkci `zvyraznovani`.
+   * Defaultne (i pokud se nespecifikuje) je tato fuknce zapnuta. 
+   */
+  celaSlova?: boolean,
 }
 
 /** Pouze pro funkci zvyraznovani. Položky v menu při označení pasáže. */
